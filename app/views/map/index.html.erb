@@ -1,0 +1,176 @@
+<div id="top_map">
+<table width="100%" cellspacing="5" style="margin: 5px 0px;"><tbody><tr>
+	<td width="30%"><b>ATMapper</b><br/> マップ登録</td>
+</tr></tbody></table>
+
+<form>
+<input type="text" value="" placeholder="例）場所・駅など"  id="address">
+<input type="button" value="地図検索" id="button">
+</form>
+<script>
+
+var button = document.getElementById("button");
+button.onclick = function() {
+  var address = document.getElementById("address").value;
+  codeAddress(address);
+}
+</script>
+
+<script src="http://maps.googleapis.com/maps/api/js?&sensor=false"></script>
+<div id="map-canvas" style="width:600px;height:600px;"></div>
+</div>
+<div id="top_map_middle">
+<div style="width:600px;height:600px;">
+
+<form action="/map/create" accept-charset="UTF-8" method="post">
+	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  	<input type="hidden" name="lat" id="lat" value=""/>
+  	<input type="hidden" name="lgn" id="lgn" value=""/>
+  	<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名" />
+	<a href="#">↑住所取得</a><br/><br/>
+	<b>銀行選択</b><br/>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<%= image_tag("logo.gif", :size => "32x32") %>
+		<br/><br/>
+		<div class="col-xs-4" style="background-color:LimeGreen;">きれい</div>
+		<div class="col-xs-4" style="background-color:yellow;">人気</div>
+		<div class="col-xs-4" style="background-color:red;">見つけやすい</div>
+		<br/><br/>
+		<input type="submit" name="commit" value="登録" />
+	</form>
+	<input type="text" class="form-control" id="memo" placeholder="メモ（任意）">
+</div>
+</div>
+<hr>
+ATMapperとは？<br/>
+ATMをマップする<br/>
+ATMを探す<br/>
+利用規約<br/>
+お知らせ<br/>
+運営ブログ<br/>
+
+<script type="text/javascript">
+//キャンパスの要素を取得する
+var canvas = document.getElementById( "map-canvas" );
+
+//中心の位置座標を指定する
+var latlng = new google.maps.LatLng( 35.792621 , 139.806513 );
+
+//地図のオプションを設定する
+var mapOptions = {
+	zoom: 15 ,				//ズーム値
+	center: latlng ,		//中心座標 [latlng]
+};
+
+//[canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
+var map = new google.maps.Map( canvas , mapOptions );
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	$("#lat").val(lat);
+	$("#lgn").val(lng);
+var cross_marker=null;
+google.maps.event.addListener(map, 'dragend', function() {
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	$("#lat").val(lat);
+	$("#lgn").val(lng);
+});
+document.getElementById("map-canvas").addEventListener("click",function(){
+	setTimeout(function(){
+		title = document.getElementsByClassName('gm-title')[0]
+		if(title != void 0) {
+			$("#mapname").val(title.innerHTML);
+		}
+		addr = document.getElementsByClassName('gm-addr')[0]
+		if(addr != void 0) {
+			$("#memo").val(addr.innerHTML);
+		}	
+	}, 1000);
+},false);
+
+function drawMarkerCenterInit(myMap,pos){
+    var markerCenter = new google.maps.Marker({
+        position: pos,
+        map: myMap,
+        title: 'map center:' + pos, // アイコンのタイトル (中心の経緯度を設定)
+        icon: '/assets/a.png', // アイコン画像を指定
+        draggable: false // ドラッグ可能にする
+    });
+    return markerCenter;
+}
+// 地図検索
+function codeAddress(address) {
+  var geocoder = new google.maps.Geocoder();
+
+  var mapOptions = {
+    zoom: 18,
+    scrollwheel: false,
+  };
+
+  // 地図を表示させるインスタンスを生成
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+
+  // geocoder.geocode()メソッドを実行 
+  geocoder.geocode( { 'address': address}, function(results, status) {
+
+    // ジオコーディングが成功した場合
+    if (status == google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	$("#lat").val(lat);
+	$("#lgn").val(lng);
+
+var cross_marker=null;
+google.maps.event.addListener(map, 'dragend', function() {
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	$("#lat").val(lat);
+	$("#lgn").val(lng);
+});
+
+    // ジオコーディングが成功しなかった場合
+    } else {
+      console.log('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+function getPos() {
+
+}
+</script>
