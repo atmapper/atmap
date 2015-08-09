@@ -12,9 +12,9 @@ class MapController < ApplicationController
   		t.famous = '2';
   		t.infoseek = '3';
     	if t.save
-    	  render :template => 'map/index' , :layout => false , :status => 200
+    	  render :nothing => true  , :status => 200
     	else
-    	  render :template => 'map/index' , :layout => false , :status => 400
+    	  render :nothing => true  , :status => 500
     	end
 	end
 	def show
