@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   get   "welcome/map"   => "welcome#map"
   get   "welcome/view"  => "welcome#view"
   post  "map/create"    => "map#create"
+  get   "map/list"      => "map#list"
   get   "map/"          => "map#index"
 end

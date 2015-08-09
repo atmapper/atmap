@@ -74,17 +74,16 @@ var mapOptions = {
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
 
-google.maps.event.addListener(map, 'dragend', function() {
+google.maps.event.addListener(map, 'idle', function() {
 	var latlng = map.getCenter();
 	var lat = latlng.lat();
 	var lng = latlng.lng();
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
+	dispLatLng();
+	alert("test");
 });
 
-google.maps.event.addListener (map, 'bounds_changed', function() {
-	dispLatLng();
-});
 createCenterMaker();
 
 /**************************************************************************/
@@ -155,10 +154,6 @@ function codeAddress(address) {
 	$("#lgn").val(lng);
 	createCenterMaker();
 
-	google.maps.event.addListener (map, 'bounds_changed', function() {
-		dispLatLng();
-	});
-
 	google.maps.event.addListener(map, 'dragend', function() {
 		var latlng = map.getCenter();
 		var lat = latlng.lat();
@@ -182,7 +177,47 @@ var swlng = swLatlng.lng();
 var neLatlng = latlngBounds.getNorthEast();
 var nelat = neLatlng.lat();
 var nelng = neLatlng.lng();
-  alert("[SouthWest]=[" + swlat + "," + swlng);
-  alert("[NorthEast]=[" + nelat + "," + nelng);
+ajaxrequest(null, "get", '/map/list?swlat=' + swlat + '&swlng=' + swlng + '&nelat=' + nelat + '&nelng=' + nelng,
+	function(j_data){
+		update_maker(j_data);
+	},
+	function(j_data){
+		alert("sorry, this system is busy. Please try again later.")
+	});
+}
+
+function ajaxrequest(data,type,url,successcb,errorcb){
+    $.ajax({
+      type: type,
+      url: url,
+      headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+      contentType: 'application/json',
+      dataType: 'json',
+      data:data,
+      success: function(j_data){
+        successcb(j_data);
+      },error: function(j_data){
+        if(j_data.status == 400){
+          if(j_data.responseText == "length"){
+            alert("一つのボードに登録可能なメモは10本です。\nメモを削除するか、ボードを作成してください。")
+          }
+        }else{
+          errorcb(j_data);
+        }
+      }
+    });
+
+}
+function update_maker(json) {
+var markers = new Array(); 
+    for(i=0;i<json.length;i++){
+    	console.log(json[i]['lat'] +" : " + json[i]['lgn']);
+		markers[i] = new google.maps.Marker({
+   		position: new google.maps.LatLng(
+   			json[i]['lat'],
+   			json[i]['lgn']),
+   			map: map
+   		});
+ 	}
 }
 </script>

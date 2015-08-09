@@ -2,9 +2,9 @@ class MapController < ApplicationController
 	def index
 	end
 	def create
-		idstr = Time.now.strftime("%Y%m%d%H%M%S") + (0..9).to_a.sample(5).join
-		t = Map.new(id: idstr);
+		t = Map.new();
   		t.mapname = params[:mapname];
+
   		t.lat = params[:lat];
   		t.lgn = params[:lgn];
   		t.body = '';
@@ -17,8 +17,17 @@ class MapController < ApplicationController
     	  render :action => 'index'  , :status => 500
     	end
 	end
-	def show
-	end
 	def list
+    t = Map.where(["
+      lat > ?
+      and lgn > ? 
+      and lat < ?
+      and lgn < ?",
+       params[:swlat], params[:swlng], params[:nelat], params[:nelng]]
+      )
+    logger.debug(t);
+    render json: t,status: :ok
 	end
+  def show
+  end
 end
