@@ -8,13 +8,13 @@ class MapController < ApplicationController
   		t.lat = params[:lat];
   		t.lgn = params[:lgn];
   		t.body = '';
-  		t.clean = '1';
-  		t.famous = '2';
-  		t.infoseek = '3';
+  		t.clean = 1;
+  		t.famous = 1;
+  		t.infoseek = 1;
     	if t.save
-    	  render :nothing => true  , :status => 200
+    	  render :action => 'index'  , :status => 200
     	else
-    	  render :nothing => true  , :status => 500
+    	  render :action => 'index'  , :status => 500
     	end
 	end
 	def show

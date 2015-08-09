@@ -24,9 +24,9 @@ button.onclick = function() {
 <div id="map-canvas" style="width:600px;height:600px;"></div>
 </div>
 <div id="top_map_middle">
-<div style="width:600px;height:600px;">
+<div style="width:600px;">
 
-<form action="/map/create" accept-charset="UTF-8" method="post" name="mapdetail" style="display:none;">
+<form action="/map/create" accept-charset="UTF-8" method="post" name="mapdetail">
 	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   	<input type="hidden" name="lat" id="lat" value=""/>
   	<input type="hidden" name="lgn" id="lgn" value=""/>
@@ -37,9 +37,8 @@ button.onclick = function() {
   		<option>三井住友</option>
   		<option>セブン銀行</option>
 	</select>
-	<button class="btn btn-large btn-block btn-primary" type="button" onclick="form.submit();mapnonedetailform()">登録する</button><a href="javascript:void(0);" onclick="mapnonedetailform();">戻る</a>
+	<button class="btn btn-large btn-block btn-primary" type="button" onclick="form.submit();">登録する</button>
 </form>
-		<button class="btn btn-large btn-block btn-primary" id="beforebtn" type="button" onclick="mapdetailform()">画面中央にピンを打つ</button>
 </div>
 </div>
 <hr>
@@ -54,25 +53,27 @@ ATMを探す<br/>
 var before_title ="";
 //キャンパスの要素を取得する
 var canvas = document.getElementById( "map-canvas" );
-
+var markersArray = [];
+var crossSize = 19;
 //中心の位置座標を指定する
 var latlng = new google.maps.LatLng( 35.792621 , 139.806513 );
+var map;
 
 //地図のオプションを設定する
 var mapOptions = {
 	zoom: 15 ,				//ズーム値
-	center: latlng ,		
-		 mapTypeId: google.maps.MapTypeId.ROADMAP
+	center: latlng,
+	scrollwheel: false,
+	mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }
 };
 
-//[canvas]に、[mapOptions]の内容の、地図のインスタンス([map])を作成する
-var map = new google.maps.Map( canvas , mapOptions );
+	map = new google.maps.Map( canvas , mapOptions );
 	var latlng = map.getCenter();
 	var lat = latlng.lat();
 	var lng = latlng.lng();
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
-var cross_marker=null;
+
 google.maps.event.addListener(map, 'dragend', function() {
 	var latlng = map.getCenter();
 	var lat = latlng.lat();
@@ -80,33 +81,58 @@ google.maps.event.addListener(map, 'dragend', function() {
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
 });
-document.getElementById("map-canvas").addEventListener("click",function(e){
-	makerclick(map,e)
-},false);
-function makerclick(map,e){
-	if(document.getElementsByClassName('gm-style-iw')[0] == void 0
-		|| document.getElementsByClassName('gm-style-iw')[0].innerText == "" ){
+
+google.maps.event.addListener (map, 'bounds_changed', function() {
+	dispLatLng();
+});
+createCenterMaker();
+
+/**************************************************************************/
+	function CrossControl( controlDiv, map )
+	/*
+	* センターマーカーオブジェクト
+	***************************************************************************/
+	{
+
+		var mapDiv = map.getDiv();
+
+		// 縦のライン
+		var controlCrossV = document.createElement('DIV');
+		controlCrossV.style.position = 'absolute'
+		controlCrossV.style.borderStyle = 'none none none solid';
+		controlCrossV.style.borderWidth = '1px';
+		controlCrossV.style.borderColor = 'red';
+		controlCrossV.style.height = crossSize + 'px';
+		controlCrossV.style.marginTop   = (( mapDiv.offsetHeight - crossSize + 1) / 2) + 'px';
+		controlDiv.appendChild( controlCrossV );
+
+		// 横のライン
+		var controlCrossH = document.createElement('DIV');
+		controlCrossH.style.position = 'absolute'
+		controlCrossH.style.borderStyle = 'solid none none none';
+		controlCrossH.style.borderWidth = '1px';
+		controlCrossH.style.borderColor = 'red';
+		controlCrossH.style.width = crossSize + 'px';
+		controlCrossH.style.marginTop =  mapDiv.offsetHeight / 2 + 'px';
+		controlCrossH.style.marginLeft = (( crossSize - 1 ) / -2) + 'px';
+		controlDiv.appendChild( controlCrossH );
 	}
-	setTimeout(function(){
-		title = document.getElementsByClassName('gm-title')[0]
-		if(title != void 0
-			&& title.innerText != ""
-			&& title.innerHTML != before_title) {
-			$("#mapname").val(title.innerHTML);
-			var map_hi = $("#map-canvas").height() / 2;
-			var map_wa = $("#map-canvas").width() / 2;
-			var rect = e.target.getBoundingClientRect();
-            var movex = (e.clientX - rect.left) - map_hi;
-            var movey = (e.clientY - rect.top) - map_wa;
-			map.panBy(movex, movey);
-			before_title = title.innerText;
-		}
-		addr = document.getElementsByClassName('gm-addr')[0]
-		if(addr != void 0) {
-			$("#memo").val(addr.innerHTML);
-		}	
-	}, 500);
-}
+
+	/**************************************************************************/
+	function createCenterMaker()
+	/*
+	* センターマーカー作成
+	***************************************************************************/
+	{
+		var CrossControlDiv = document.createElement('DIV');
+		var crossControl = new CrossControl( CrossControlDiv, map );
+
+		CrossControlDiv.index = 1;
+		map.controls[google.maps.ControlPosition.TOP].push( CrossControlDiv );
+	}
+
+
+
 function codeAddress(address) {
   var geocoder = new google.maps.Geocoder();
 
@@ -116,11 +142,7 @@ function codeAddress(address) {
      mapTypeId: google.maps.MapTypeId.ROADMAP
   };
 
-  // 地図を表示させるインスタンスを生成
-  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
-
-  // geocoder.geocode()メソッドを実行 
+  map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   geocoder.geocode( { 'address': address}, function(results, status) {
 
     // ジオコーディングが成功した場合
@@ -131,51 +153,36 @@ function codeAddress(address) {
 	var lng = latlng.lng();
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
+	createCenterMaker();
 
-var cross_marker=null;
-google.maps.event.addListener(map, 'dragend', function() {
-	var latlng = map.getCenter();
-	var lat = latlng.lat();
-	var lng = latlng.lng();
-	$("#lat").val(lat);
-	$("#lgn").val(lng);
-});
-	google.maps.event.addListener(map, 'click', function(event) {
-    	placeMarker(map, event.latLng);
-  	});
+	google.maps.event.addListener (map, 'bounds_changed', function() {
+		dispLatLng();
+	});
+
+	google.maps.event.addListener(map, 'dragend', function() {
+		var latlng = map.getCenter();
+		var lat = latlng.lat();
+		var lng = latlng.lng();
+		$("#lat").val(lat);
+		$("#lgn").val(lng);
+	});
+
 
     } else {
       console.log('Geocode was not successful for the following reason: ' + status);
     }
   });
 }
-function mapdetailform() {
-	document.mapdetail.style.display = 'block';
-	$("#beforebtn").hide();
-}
-function mapnonedetailform() {
-	document.mapdetail.style.display = 'none';
-	$("#beforebtn").show();
-}
-function placeMarker(map,location) {
-    var clickedLocation = new google.maps.LatLng(location);
-    var marker = new google.maps.Marker({
-        position: location
-        , map: map
-    });
-    // マーカーにタイトル(ツールチップ)を追加する
-    marker.setTitle('テスト');
-    // 吹き出しの設定
-    var infowindow = new google.maps.InfoWindow({
-        content: 'クリックされたのはここです<br>緯度:'
-                + location.lat()
-                + '<br>経度'
-                +   location.lng()
-        , size: new google.maps.Size(50,50)
-    });
-    // 吹き出しの表示
-    infowindow.open(map, marker);
-    // クリックした箇所をセンターに移動させる
-    map.setCenter(location);
+function dispLatLng(){
+var latlngBounds = map.getBounds();
+var swLatlng = latlngBounds.getSouthWest();
+var swlat = swLatlng.lat();
+var swlng = swLatlng.lng();
+
+var neLatlng = latlngBounds.getNorthEast();
+var nelat = neLatlng.lat();
+var nelng = neLatlng.lng();
+  alert("[SouthWest]=[" + swlat + "," + swlng);
+  alert("[NorthEast]=[" + nelat + "," + nelng);
 }
 </script>
