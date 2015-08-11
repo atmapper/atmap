@@ -6,7 +6,8 @@ class MapController < ApplicationController
   		t.mapname = params[:mapname];
 
   		t.lat = params[:lat];
-  		t.lgn = params[:lgn];
+      t.lgn = params[:lgn];
+      t.kind = params[:kind];
   		t.body = '';
   		t.clean = 1;
   		t.famous = 1;

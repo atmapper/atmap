@@ -31,11 +31,11 @@ button.onclick = function() {
   	<input type="hidden" name="lat" id="lat" value=""/>
   	<input type="hidden" name="lgn" id="lgn" value=""/>
   	ATM名：<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名" />
-	ATM種：<select  class="form-control">
-  		<option>みずほ</option>
-  		<option>三菱東京UFJ</option>
-  		<option>三井住友</option>
-  		<option>セブン銀行</option>
+	ATM種：<select  class="form-control" name="kind">
+  		<option value="1">みずほ</option>
+  		<option value="2">三菱東京UFJ</option>
+  		<option value="3">三井住友</option>
+  		<option value="4">セブン銀行</option>
 	</select>
 	<button class="btn btn-large btn-block btn-primary" type="button" onclick="form.submit();">登録する</button>
 </form>
@@ -81,7 +81,6 @@ google.maps.event.addListener(map, 'idle', function() {
 	$("#lat").val(lat);
 	$("#lgn").val(lng);
 	dispLatLng();
-	alert("test");
 });
 
 createCenterMaker();
@@ -216,7 +215,8 @@ var markers = new Array();
    		position: new google.maps.LatLng(
    			json[i]['lat'],
    			json[i]['lgn']),
-   			map: map
+   			map: map,
+   			icon: "/assets/mizuho.png"
    		});
  	}
 }
