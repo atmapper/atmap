@@ -33,8 +33,8 @@ button.onclick = function() {
   	ATM名：<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名" />
 	ATM種：<select  class="form-control" name="kind">
   		<option value="1">みずほ</option>
-  		<option value="2">三菱東京UFJ</option>
-  		<option value="3">三井住友</option>
+  		<option value="2">三井住友</option>
+  		<option value="3">三菱東京UFJ</option>
   		<option value="4">セブン銀行</option>
 	</select>
 	<button class="btn btn-large btn-block btn-primary" type="button" onclick="form.submit();">登録する</button>
@@ -210,14 +210,23 @@ function ajaxrequest(data,type,url,successcb,errorcb){
 function update_maker(json) {
 var markers = new Array(); 
     for(i=0;i<json.length;i++){
-    	console.log(json[i]['lat'] +" : " + json[i]['lgn']);
-		markers[i] = new google.maps.Marker({
-   		position: new google.maps.LatLng(
-   			json[i]['lat'],
-   			json[i]['lgn']),
-   			map: map,
-   			icon: "/assets/mizuho.png"
-   		});
+    	if (json[i]['kind'] == null) {
+			markers[i] = new google.maps.Marker({
+	   		position: new google.maps.LatLng(
+	   			json[i]['lat'],
+	   			json[i]['lgn']),
+	   			map: map
+	   		});
+    	} else {
+			markers[i] = new google.maps.Marker({
+	   		position: new google.maps.LatLng(
+	   			json[i]['lat'],
+	   			json[i]['lgn']),
+	   			map: map,
+	   			icon: "/assets/"+ json[i]['kind'] +".png"
+	   		});    		
+    	}
+
  	}
 }
 </script>
