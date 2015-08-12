@@ -1,20 +1,79 @@
+
 <div id="top_map">
+	こんにちわ！ <a href="javascript:void(0);" onclick="alert('日本語以外の言語は、近日対応予定です。');">日本語▼</a>
+	<div style="float:right;width:200px;">登録済みユーザは<a href="javascript:void(0);" onclick="loginform_show()">こちらから</a></div>
+	<br clear="both"/>
+
 <table width="100%" cellspacing="5" style="margin: 5px 0px;"><tbody><tr>
-	<td width="30%"><b>ATMapper</b><br/> ATMをマップする！</td>
+	<td width="30%" style="padding:0 0 0 20px;"><h1>ATMap</h1> ATMを記録する</td>
 	<td>　</td>
-	<td width="20%"><input type="text" class="form-control" placeholder="ATMをキーワードで検索する"></td>
-	<td width="50px"><button type="button" class="btn btn-primary">検索</button></td>
+	<td width="30%"><div class="input-group"><div class="input-group-addon">検索
+	</div><input type="text" class="form-control" placeholder="キーワードを入力してください"></div></td>
 </tr></tbody></table>
-<%= image_tag 'gm.png' %><br clear/>
-</div>
-<div id="top_map_middle">
-●●●●●●●●●●●
-</div>
-<div id="top_map_buttom">
-<b>ATMapperとは？</b><br/>
-全国に設置されているATM（現金自動預け払い機）を記録するプロジェクトです。旅行や、遠出した時案外ATMが見つからないものであり、コンビニを見つけて走ったらATMが設置されていなかったなど、別になくても困らないけど、あるとちょっと便利なインターネットサービスを目指しています。なお、本サービスはATMを運営している機関などとは一切関係ありません。みなさんが、普段利用しているATM情報を登録していただければ、きっと誰かの役に立つはずです！<br/><br/>
 </div>
 
+<div id="top_map_middle">
+	<div class="top_map_block">
+	<h4>ATMapとは以下のようなサービスです</h4>
+	１.ATMをキーワードで探す<br/>
+	２.自身の近くにあるATMを地図上に登録する<br/>
+	３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
+
+	本サービスは全国に設置されているATM（現金自動預け払い機）を記録するプロジェクトです。出先でATMを探しても案外見つからないもので、コンビニを見つけて走ったらATMが設置されていなかったなど、なくても困らないけど、あるとちょっと便利なインターネットサービスを目指しています。なお、本サービスはATMを運営している機関などとは一切関係ありません。みなさんが、普段利用しているATM情報を登録していただければ、きっと誰かの役に立つはずです！<br/><br/>
+
+	</div>
+	<div class="top_map_sub">
+
+	新規ユーザ登録<br/>
+	<a href="javascript:void(0);" >→ユーザ登録が必要ですか？</a>
+	<form action="/regist" method="post" name="regist" accept-charset="UTF-8" onsubmit="return checkregist()" >
+		<table style="width:90%;margin:0 auto;">
+			<tbody>
+				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="ユーザ名"></td></tr>
+				<tr><td style="padding:2px;"><input type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
+				<tr><td style="padding:2px;">アカウント登録をクリックすることで、当サイト<a href="javascript:void(0);">利用規約</a>に同意するものとします。</td></tr>
+				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;">登録する</button></td></tr>
+			</tbody>
+		</table>
+	</form>
+	</div>
+</div>
+<br clear=both />
+<div id="loginform" style="border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;background-color:#FFFAF0;width:400px;padding:10px;display:none;z-index:999;">
+<br/>
+	<form action="/login" method="post" name="login" accept-charset="UTF-8" onsubmit="return checklogin()" >
+		<table style="width:80%;margin:0 auto;" cellspacing="10">
+			<tbody>
+				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+				<tr><td style="padding:2px;"><input type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
+				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;">ログイン</button></td></tr>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
+<div id="top_map_middle">
+<h2>ATMap新着情報</h2>
+
+<div class="info_block" style="background-color:#E6E6FA;">#2015/08/12<h3>トラブル情報</h3>
+	メールの送信が不安定でした<br/>
+	12:00　〜　13:00までの間、メール送信に時間がかかり不安定となりました。現在は復旧しています。<br/>詳細は<a href="#">こちら</a>から
+</div>
+<div class="info_block" style="background-color:#FFFACD;">#2015/08/12<h3>リリース情報</h3>
+	新機能「操作ログ参照」を追加。<br/>
+	登録、検索の場所と時間帯を一覧で確認できるようになりました。<br/>詳細は<a href="#">こちら</a>から
+</div>
+<div class="info_block" style="background-color:#FFF0F5;">#2015/08/12<h3>メンテナンス日程</h3>
+	 メンテナンスにより、サービスを一時的に停止します。期間は以下の通りです。
+	 2015/9/1 23:00　〜　9/2 2:00
+</div>
+<div class="info_block" style="background-color:#90EE90;">#2015/08/12<h3>メディア情報</h3>
+	 月刊草苅マニアの「あたらしいWebサービス88選」でATMapを紹介していただきました！
+</div>
+
+</div>
+<br clear="both"/>
 <hr>
 ATMapperとは？<br/>
 ATMをマップする<br/>
@@ -23,3 +82,15 @@ ATMを探す<br/>
 お知らせ<br/>
 運営ブログ<br/>
 
+<script>
+function loginform_show(){
+	if (document.getElementById("loginform").style.display == 'none') {
+		document.getElementById("loginform").style.position = 'absolute';
+		document.getElementById("loginform").style.top      = '20px';
+		document.getElementById("loginform").style.right    = '10px';
+		document.getElementById("loginform").style.display  = 'block';		
+	} else {
+		document.getElementById("loginform").style.display  = 'none';		
+	}
+}
+</script>

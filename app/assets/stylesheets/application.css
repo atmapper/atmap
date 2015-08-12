@@ -26,6 +26,34 @@ footer {
 	width:90%;
 	overflow: hidden;
 }
+.top_map_block {
+	float:left;
+	min-width: 400px;
+	margin: 10px 10px 0 0;
+	width:60%;
+	line-height: 20px;
+}
+.info_block {
+	float:left;
+	width: 250px;
+	height:250px;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+.top_map_sub {
+	float:left;
+	min-width: 300px;
+	margin: 10px 10px 0 0;
+	width:30%;
+	line-height: 20px;
+}
+#top_map_middle {
+	margin:0 auto;
+	width:90%;
+}
 #top_map_middle {
 	margin:0 auto;
 	width:90%;
@@ -33,5 +61,4 @@ footer {
 #top_map_buttom {
 	margin:10px auto 0 auto;
 	width:90%;
-
 }
