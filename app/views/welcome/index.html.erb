@@ -5,16 +5,25 @@
 	<br clear="both"/>
 
 <table width="100%" cellspacing="5" style="margin: 5px 0px;"><tbody><tr>
-	<td width="30%" style="padding:0 0 0 20px;"><h1>ATMap</h1> ATMを記録する</td>
+	<td width="30%" style="padding:0 0 0 20px;"><h1>ATMap</h1> </td>
 	<td>　</td>
-	<td width="30%"><div class="input-group"><div class="input-group-addon">検索
-	</div><input type="text" class="form-control" placeholder="キーワードを入力してください"></div></td>
+	<td width="30%"></td>
 </tr></tbody></table>
 </div>
 
 <div id="top_map_middle">
+	<div style="padding:10px 5px;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<div class="col-xs-4">
+			<div class="input-group">
+				<div class="input-group-addon">検索</div>
+				<input type="text" class="form-control" placeholder="キーワードを入力してください">
+			</div>
+		</div>
+		#2015/08/12 一時的に負荷が高くなり、繋がりにくい時間帯がありました。
+	<br clear="both" />
+	</div>
 	<div class="top_map_block">
-	<h4>ATMapとは以下のようなサービスです</h4>
+	<h4>ATMapとは、こんなサービスです</h4>
 	１.ATMをキーワードで探す<br/>
 	２.自身の近くにあるATMを地図上に登録する<br/>
 	３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
@@ -24,16 +33,16 @@
 	</div>
 	<div class="top_map_sub">
 
-	新規ユーザ登録<br/>
+	<h4>新規ユーザ登録</h4>
 	<a href="javascript:void(0);" >→ユーザ登録が必要ですか？</a>
-	<form action="/regist" method="post" name="regist" accept-charset="UTF-8" onsubmit="return checkregist()" >
+	<form action="/users/create" method="post" name="user" accept-charset="UTF-8" onsubmit="return checkregist()" >
 		<table style="width:90%;margin:0 auto;">
 			<tbody>
-				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
-				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="ユーザ名"></td></tr>
-				<tr><td style="padding:2px;"><input type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
+				<tr><td style="padding:2px;"><input type="text" name="user[email]" class="form-control" placeholder="メールアドレス"></td></tr>
+				<tr><td style="padding:2px;"><input type="text" name="user[name]" class="form-control" placeholder="ユーザ名"></td></tr>
+				<tr><td style="padding:2px;"><input type="password" name="user[password]" class="form-control" placeholder="パスワード"></td></tr>
 				<tr><td style="padding:2px;">アカウント登録をクリックすることで、当サイト<a href="javascript:void(0);">利用規約</a>に同意するものとします。</td></tr>
-				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;">登録する</button></td></tr>
+				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="form.submit();">登録する</button></td></tr>
 			</tbody>
 		</table>
 	</form>
@@ -71,6 +80,20 @@
 <div class="info_block" style="background-color:#90EE90;">#2015/08/12<h3>メディア情報</h3>
 	 月刊草苅マニアの「あたらしいWebサービス88選」でATMapを紹介していただきました！
 </div>
+
+<br clear="both"/>
+<h2>ATMapのいろいろな記録（毎日2時更新）</h2>
+<h4>累計ATM数：123,456,789</h4>
+<h4>最優秀都道府県別登録率：岡山県（88.26%）</h4>
+<h4>WR2（Weekly Regist Recio）：Perlerさん（12.11pt）</h4>
+<h4>DR2（Daily Regist Recio）：夜勤さん（2.1pt）</h4>
+<h4>MAW（Most Atm Watcher）：8-12さん（112pt）</h4>
+<h4>Daily PageView:123,456</h4>
+<h4>日別登録数：5021トランザクション</h4>
+<h4>Top Mapper：トーキョーベンチさん</h4>
+
+
+
 
 </div>
 <br clear="both"/>

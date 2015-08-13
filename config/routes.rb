@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   post  "map/create"    => "map#create"
   get   "map/list"      => "map#list"
   get   "map/"          => "map#index"
+  post  "users/create"   => "users#create"
+  get   "users/"         => "users#index"
 end
