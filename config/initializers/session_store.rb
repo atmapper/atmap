@@ -2,3 +2,4 @@
 
 #Rails.application.config.session_store :cookie_store, key: '_atmap_session'
 Rails.application.config.session_store ActionDispatch::Session::CacheStore, key: '_foo_session', expire_after: 1.month
+

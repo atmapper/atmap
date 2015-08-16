@@ -1,53 +1,54 @@
-<div id="top_map">
-<table width="100%" cellspacing="5" style="margin: 5px 0px;"><tbody><tr>
-	<td width="30%"><b>ATMapper</b><br/> マップ登録</td>
-</tr></tbody></table>
-
-<div style="width:600px;">
-<form>
-	<table><tbody><tr>
-		<td style="width:500px;"><input type="text" value="" placeholder="例）場所・駅など" class="form-control" id="address"></td>
-		<td><button class="btn btn-small btn-primary" type="button" id="button">地図検索</button></td>
-	</tr></tbody></table>
-</form>
+<div id="top_map_middle">
+	<h1 onclick="document.location.href='/'">ATMap</h1>
+<div class="top_map_middle_block">
+	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<table style="margin: 0 auto;"><tbody><tr><td>
+			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
+		</td><td style="padding: 0 0 0 10px;">
+			<div class="input-group">
+				<input type="text" name="keyword" id="keyword" class="form-control" placeholder="キーワード検索">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" id="button">検索</button>
+				</span>
+			</div>
+		</td></tr></tbody></table>
+	</div>
 </div>
-<script>
 
+<script>
 var button = document.getElementById("button");
 button.onclick = function() {
-  var address = document.getElementById("address").value;
+  var address = document.getElementById("keyword").value;
   codeAddress(address);
 }
 </script>
 
-<script src="http://maps.googleapis.com/maps/api/js?&sensor=false"></script>
-<div id="map-canvas" style="width:600px;height:600px;"></div>
+<div class="top_map_buttom_block">
+<script src="http://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
+<div id="map-canvas" style="width:100%;height:400px;"></div>
 </div>
 <div id="top_map_middle">
 <div style="width:600px;">
-
-<form action="/map/create" accept-charset="UTF-8" method="post" name="mapdetail">
 	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   	<input type="hidden" name="lat" id="lat" value=""/>
   	<input type="hidden" name="lgn" id="lgn" value=""/>
-  	ATM名：<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名" />
-	ATM種：<select  class="form-control" name="kind">
+	<div class="input-group">
+		<span class="input-group-addon">ATM名</span>
+	  	<input type="text" name="mapname" id="mapname" class="form-control" placeholder="最大100文字" />
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">メ　モ</span>
+	  	<input type="text" name="memo" id="memo" class="form-control" placeholder="最大255文字" />
+	</div>
+	<select  class="form-control" name="kind" id="kind">
   		<option value="1">みずほ</option>
   		<option value="2">三井住友</option>
   		<option value="3">三菱東京UFJ</option>
   		<option value="4">セブン銀行</option>
 	</select>
-	<button class="btn btn-large btn-block btn-primary" type="button" onclick="form.submit();">登録する</button>
-</form>
+	<button class="btn btn-large btn-block btn-primary" type="button" onclick="regist_map();">登録する</button>
 </div>
 </div>
-<hr>
-ATMapperとは？<br/>
-ATMをマップする<br/>
-ATMを探す<br/>
-利用規約<br/>
-お知らせ<br/>
-運営ブログ<br/>
 
 <script type="text/javascript">
 var before_title ="";
@@ -56,33 +57,23 @@ var canvas = document.getElementById( "map-canvas" );
 var markersArray = [];
 var crossSize = 19;
 //中心の位置座標を指定する
-var latlng = new google.maps.LatLng( 35.792621 , 139.806513 );
 var map;
 
-//地図のオプションを設定する
-var mapOptions = {
-	zoom: 15 ,				//ズーム値
-	center: latlng,
-	scrollwheel: false,
-	mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }
-};
+// //地図のオプションを設定する
+// var mapOptions = {
+// 	zoom: 15 ,				//ズーム値
+// 	center: latlng,
+// 	scrollwheel: false,
+// 	mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }
+// };
 
-	map = new google.maps.Map( canvas , mapOptions );
-	var latlng = map.getCenter();
-	var lat = latlng.lat();
-	var lng = latlng.lng();
-	$("#lat").val(lat);
-	$("#lgn").val(lng);
-
-google.maps.event.addListener(map, 'idle', function() {
-	var latlng = map.getCenter();
-	var lat = latlng.lat();
-	var lng = latlng.lng();
-	$("#lat").val(lat);
-	$("#lgn").val(lng);
-	dispLatLng();
-});
-
+// 	map = new google.maps.Map( canvas , mapOptions );
+// 	var latlng = map.getCenter();
+// 	var lat = latlng.lat();
+// 	var lng = latlng.lng();
+// 	$("#lat").val(lat);
+// 	$("#lgn").val(lng);
+codeAddress('<%= @keyword %>');
 createCenterMaker();
 
 /**************************************************************************/
@@ -132,6 +123,9 @@ createCenterMaker();
 
 
 function codeAddress(address) {
+	if(address == '') {
+		address = '皇居';
+	}
   var geocoder = new google.maps.Geocoder();
 
   var mapOptions = {
@@ -160,7 +154,14 @@ function codeAddress(address) {
 		$("#lat").val(lat);
 		$("#lgn").val(lng);
 	});
-
+	google.maps.event.addListener(map, 'idle', function() {
+		var latlng = map.getCenter();
+		var lat = latlng.lat();
+		var lng = latlng.lng();
+		$("#lat").val(lat);
+		$("#lgn").val(lng);
+		dispLatLng();
+	});
 
     } else {
       console.log('Geocode was not successful for the following reason: ' + status);
@@ -181,7 +182,7 @@ ajaxrequest(null, "get", '/map/list?swlat=' + swlat + '&swlng=' + swlng + '&nela
 		update_maker(j_data);
 	},
 	function(j_data){
-		alert("sorry, this system is busy. Please try again later.")
+		alert("aasorry, this system is busy. Please try again later.")
 	});
 }
 
@@ -195,14 +196,9 @@ function ajaxrequest(data,type,url,successcb,errorcb){
       data:data,
       success: function(j_data){
         successcb(j_data);
-      },error: function(j_data){
-        if(j_data.status == 400){
-          if(j_data.responseText == "length"){
-            alert("一つのボードに登録可能なメモは10本です。\nメモを削除するか、ボードを作成してください。")
-          }
-        }else{
+      },
+      error: function(j_data){
           errorcb(j_data);
-        }
       }
     });
 
@@ -226,7 +222,75 @@ var markers = new Array();
 	   			icon: "/assets/"+ json[i]['kind'] +".png"
 	   		});    		
     	}
-
+	   	onMarkerClick(markers[i], json[i]);
  	}
+}
+var myInfoWindow_open = null;
+function onMarkerClick(marker, info){
+    google.maps.event.addListener(
+        marker
+    ,   'click'
+    ,   function(event){
+    		if(myInfoWindow_open) {
+    			myInfoWindow_open.close();
+    		}
+	    	var myInfoWindow = new google.maps.InfoWindow({
+		    	content: '<div style="width:300px;">'
+		    	+ '<b>' + info["mapname"] + '</b><br/>'
+		    	+ info['memo']
+		    	+ '<br clear="both" /><br/><br/>'
+		    	+ '<img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')"; >　　'
+		    	+ '<img src="/assets/comment.png" height="36" width="36" onclick=alert("test"); >　　'
+		    	+ '<img src="/assets/clip.png" height="36" width="36" onclick=clip_set(' + info['id'] + '); >'
+		    	+ '</div>'
+	  		});
+	  		myInfoWindow.open(map, marker);
+	  		myInfoWindow_open = myInfoWindow;
+        }
+    );
+}
+function route_set(lat, lgn) {
+	new google.maps.DirectionsService().route({
+        origin: "皇居", 
+        destination: new google.maps.LatLng(lat,lgn),
+        travelMode: google.maps.DirectionsTravelMode.WALKING
+    },function(result, status){
+    	if (status == google.maps.DirectionsStatus.OK) {
+      		new google.maps.DirectionsRenderer({map: map}).setDirections(result);
+    	}
+    });
+}
+function clip_set(mapid) {
+	var data = $.toJSON({
+		id : mapid
+	});
+	ajaxrequest(data,"post","/map/clip",
+	function(j_data){
+	},
+	function(j_data){
+		if(j_data.status == 401){
+		alert("クリップを利用するにはログインしてください");
+		} else {
+		alert("sorry, this system is busy. Please try again later.")			
+		}
+	});
+}
+function regist_map() {
+	var data = $.toJSON({
+		lat : document.getElementById("lat").value,
+		lgn : document.getElementById("lgn").value,
+		kind : document.getElementById("kind").value,
+		memo : document.getElementById("memo").value,
+		mapname :document.getElementById("mapname").value 
+	});
+	ajaxrequest(data,"post","/map/create",
+	function(j_data){
+		dispLatLng();
+		document.getElementById("memo").value　= '';
+		document.getElementById("mapname").value　= '';
+	},
+	function(j_data){
+		alert("sorry, this system is busy. Please try again later.")
+	});
 }
 </script>

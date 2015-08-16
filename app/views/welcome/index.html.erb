@@ -1,119 +1,112 @@
-
-<div id="top_map">
-	こんにちわ！ <a href="javascript:void(0);" onclick="alert('日本語以外の言語は、近日対応予定です。');">日本語▼</a>
-	<div style="float:right;width:200px;">登録済みユーザは<a href="javascript:void(0);" onclick="loginform_show()">こちらから</a></div>
-	<br clear="both"/>
-
-<table width="100%" cellspacing="5" style="margin: 5px 0px;"><tbody><tr>
-	<td width="30%" style="padding:0 0 0 20px;"><h1>ATMap</h1> </td>
-	<td>　</td>
-	<td width="30%"></td>
-</tr></tbody></table>
-</div>
-
 <div id="top_map_middle">
-	<div style="padding:10px 5px;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
-		<div class="col-xs-4">
+
+	<h1>ATMap</h1>
+<div class="top_map_middle_block">
+	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<table style="margin: 0 auto;"><tbody><tr><td>
+			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
+		</td><td style="padding: 0 0 0 10px;">
+			<form action="/map/" method="post" accept-charset="UTF-8">
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 			<div class="input-group">
-				<div class="input-group-addon">検索</div>
-				<input type="text" class="form-control" placeholder="キーワードを入力してください">
+				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
+				</span>
 			</div>
-		</div>
-		#2015/08/12 一時的に負荷が高くなり、繋がりにくい時間帯がありました。
-	<br clear="both" />
-	</div>
-	<div class="top_map_block">
-	<h4>ATMapとは、こんなサービスです</h4>
-	１.ATMをキーワードで探す<br/>
-	２.自身の近くにあるATMを地図上に登録する<br/>
-	３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
-
-	本サービスは全国に設置されているATM（現金自動預け払い機）を記録するプロジェクトです。出先でATMを探しても案外見つからないもので、コンビニを見つけて走ったらATMが設置されていなかったなど、なくても困らないけど、あるとちょっと便利なインターネットサービスを目指しています。なお、本サービスはATMを運営している機関などとは一切関係ありません。みなさんが、普段利用しているATM情報を登録していただければ、きっと誰かの役に立つはずです！<br/><br/>
-
-	</div>
-	<div class="top_map_sub">
-
-	<h4>新規ユーザ登録</h4>
-	<a href="javascript:void(0);" >→ユーザ登録が必要ですか？</a>
-	<form action="/users/create" method="post" name="user" accept-charset="UTF-8" onsubmit="return checkregist()" >
-		<table style="width:90%;margin:0 auto;">
-			<tbody>
-				<tr><td style="padding:2px;"><input type="text" name="user[email]" class="form-control" placeholder="メールアドレス"></td></tr>
-				<tr><td style="padding:2px;"><input type="text" name="user[name]" class="form-control" placeholder="ユーザ名"></td></tr>
-				<tr><td style="padding:2px;"><input type="password" name="user[password]" class="form-control" placeholder="パスワード"></td></tr>
-				<tr><td style="padding:2px;">アカウント登録をクリックすることで、当サイト<a href="javascript:void(0);">利用規約</a>に同意するものとします。</td></tr>
-				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="form.submit();">登録する</button></td></tr>
-			</tbody>
-		</table>
-	</form>
+			</form>
+		</td></tr></tbody></table>
 	</div>
 </div>
-<br clear=both />
-<div id="loginform" style="border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;background-color:#FFFAF0;width:400px;padding:10px;display:none;z-index:999;">
+<div id="top_map_buttom">
+	<script src="http://maps.googleapis.com/maps/api/js?&sensor=false"></script>
+	<div id="map-canvas" style="width:60%;min-width: 350px;height:250px;float:left;"></div>
+	<div style="width:35%;min-width:350px;float:left;margin: 0 0 0 10px;">
+		<b>ATMapとはこんなサービスです</b><br/>
+			１.ATMの設置場所をキーワードで探す<br/>
+			２.自身の近くにあるATMを地図上に登録する<br/>
+			３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
+			ユーザを登録しなくても、ATMを登録可能です。登録すると登録したATMを一覧表示できるなど、より便利に利用することができます。
+	</div>
+</div>
+<br clear="both"/>
 <br/>
-	<form action="/login" method="post" name="login" accept-charset="UTF-8" onsubmit="return checklogin()" >
-		<table style="width:80%;margin:0 auto;" cellspacing="10">
-			<tbody>
-				<tr><td style="padding:2px;"><input type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
-				<tr><td style="padding:2px;"><input type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
-				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;">ログイン</button></td></tr>
-				</tr>
-			</tbody>
-		</table>
-	</form>
-</div>
-<div id="top_map_middle">
-<h2>ATMap新着情報</h2>
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<h4>新着情報</h4>
+		<b># 2015/08/14（金）　メンテナンス予定のお知らせ</b><br/>
+		システム脆弱性対策のため、以下日程でサービスを停止してメンテナンスを実施します。時間中はシステムが利用できません。ご了承ください。<br/>
+		メンテ期間：2015/08/15（土） 0:00 〜 4:00
 
-<div class="info_block" style="background-color:#E6E6FA;">#2015/08/12<h3>トラブル情報</h3>
-	メールの送信が不安定でした<br/>
-	12:00　〜　13:00までの間、メール送信に時間がかかり不安定となりました。現在は復旧しています。<br/>詳細は<a href="#">こちら</a>から
-</div>
-<div class="info_block" style="background-color:#FFFACD;">#2015/08/12<h3>リリース情報</h3>
-	新機能「操作ログ参照」を追加。<br/>
-	登録、検索の場所と時間帯を一覧で確認できるようになりました。<br/>詳細は<a href="#">こちら</a>から
-</div>
-<div class="info_block" style="background-color:#FFF0F5;">#2015/08/12<h3>メンテナンス日程</h3>
-	 メンテナンスにより、サービスを一時的に停止します。期間は以下の通りです。
-	 2015/9/1 23:00　〜　9/2 2:00
-</div>
-<div class="info_block" style="background-color:#90EE90;">#2015/08/12<h3>メディア情報</h3>
-	 月刊草苅マニアの「あたらしいWebサービス88選」でATMapを紹介していただきました！
+<br/>
+<br/>
+		<b># 2015/08/14（金）　新機能実装のお知らせ</b><br/>
+		新しい機能をリリースしました。新しい機能をリリースしました。ユーザを登録していただければ、登録した内容を収集して同行の傾向を分析します。マイページの「ATAnalyze」から利用できます。新機能の概要はチュートリアルをご覧ください。これによって、行動パターンや傾向など、ATMapに記録されているデータを集計して、いままで知りえなかった情報を可視化します。
+<br/>
+<br/>
+過去のお知らせはこちらから
+
+	</div>
 </div>
 
-<br clear="both"/>
-<h2>ATMapのいろいろな記録（毎日2時更新）</h2>
-<h4>累計ATM数：123,456,789</h4>
-<h4>最優秀都道府県別登録率：岡山県（88.26%）</h4>
-<h4>WR2（Weekly Regist Recio）：Perlerさん（12.11pt）</h4>
-<h4>DR2（Daily Regist Recio）：夜勤さん（2.1pt）</h4>
-<h4>MAW（Most Atm Watcher）：8-12さん（112pt）</h4>
-<h4>Daily PageView:123,456</h4>
-<h4>日別登録数：5021トランザクション</h4>
-<h4>Top Mapper：トーキョーベンチさん</h4>
-
-
-
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+	<h4>ユーザの動き</h4>
+	<b>見た</b>：セブンイレブン六郷土手駅前（ユーザ名）<br/>
+	<b>見た</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	<b>ATMap</b>：神奈川新町郵便局（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	</div>
+</div>
 
 </div>
-<br clear="both"/>
-<hr>
-ATMapperとは？<br/>
-ATMをマップする<br/>
-ATMを探す<br/>
-利用規約<br/>
-お知らせ<br/>
-運営ブログ<br/>
+<br clear="both" />
 
-<script>
-function loginform_show(){
-	if (document.getElementById("loginform").style.display == 'none') {
-		document.getElementById("loginform").style.position = 'absolute';
-		document.getElementById("loginform").style.top      = '20px';
-		document.getElementById("loginform").style.right    = '10px';
-		document.getElementById("loginform").style.display  = 'block';		
-	} else {
-		document.getElementById("loginform").style.display  = 'none';		
-	}
+<footer style="padding:10px;">
+ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運営団体</a>　<a href="/info.html" title="利用規約とプライバシー" target="blank">利用規約とプライバシー</a>　</footer>
+<script type="text/javascript">
+function loadmap(lat,lgn,marker_name) {
+var before_title ="";
+//キャンパスの要素を取得する
+var canvas = document.getElementById( "map-canvas" );
+var crossSize = 19;
+//中心の位置座標を指定する
+var latlng = new google.maps.LatLng( lat , lgn );
+var map;
+
+//地図のオプションを設定する
+var mapOptions = {
+	zoom: 4 ,
+	center: latlng,
+	scrollwheel: false,
+	mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }
+};
+	map = new google.maps.Map( canvas , mapOptions );
+	markers = new google.maps.Marker({
+	position: new google.maps.LatLng(
+		lat,
+		lgn),
+		map: map,
+		icon: marker_name
+	});
 }
+// マーカー情報取得
+$.ajax({
+  type: 'get',
+  url: '/welcome/data',
+  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+  contentType: 'application/json',
+  dataType: 'json',
+  data:null,
+  success: function(json){
+  	    for(i=0;i<json.length;i++){
+  	    	loadmap(json[i]['lat'], json[i]['lgn'], "/assets/"+ json[i]['kind'] +".png");
+	 	}
+  },error: function(json){
+    alert("地図の読み込みに失敗しました。\nしばらくお待ちいただいた後、更新してください。")
+  }
+});
 </script>

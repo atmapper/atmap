@@ -1,0 +1,74 @@
+<div id="top_map_middle">
+<h1 onclick="document.location.href='/'">ATMap</h1>
+<div class="top_map_middle_block">
+	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<table style="margin: 0 auto;"><tbody><tr><td>
+			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
+		</td><td style="padding: 0 0 0 10px;">
+			<form action="/map/" method="post" accept-charset="UTF-8">
+				<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+			<div class="input-group">
+				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
+				</span>
+			</div>
+			</form>
+		</td></tr></tbody></table>
+	</div>
+</div>
+<div id="top_map_buttom">
+	<div id="act_log" style="width:60%;min-width: 350px;height:250px;float:left;">
+
+
+	</div>
+	<div style="width:35%;min-width:350px;float:left;margin: 0 0 0 10px;">
+		<b>ATMapとはこんなサービスです</b><br/>
+			１.ATMの設置場所をキーワードで探す<br/>
+			２.自身の近くにあるATMを地図上に登録する<br/>
+			３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
+			ユーザを登録しなくても、ATMを登録可能です。登録すると登録したATMを一覧表示できるなど、より便利に利用することができます。
+	</div>
+</div>
+<br clear="both"/>
+<br/>
+
+<br clear="both" />
+
+<footer style="padding:10px;">
+ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運営団体</a>　<a href="/info.html" title="利用規約とプライバシー" target="blank">利用規約とプライバシー</a></footer>
+<script type="text/javascript">
+ajaxrequest(null,"get","/play/info",
+	function(j_data){
+		console.log(j_data["clip"][0].length);
+		value = "<b>登録履歴（最新から10件前後表示）</b><br/>";
+		for (m=0;m<j_data["map"][0].length;m++) {
+			value += '<h4>' + j_data["map"][0][m]["created_at"] + j_data["map"][0][m]["mapname"] + 'を登録しました</h4>';
+		}
+		for (c=0;c<j_data["clip"][0].length;c++) {
+			value += '<h4>' + j_data["clip"][0][c]["created_at"] + ' ATMをクリップしました。</h4>';
+		}
+		$("#act_log").html(value);
+	},
+	function(j_data){
+
+	}
+);
+function ajaxrequest(data,type,url,successcb,errorcb){
+    $.ajax({
+      type: type,
+      url: url,
+      headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+      contentType: 'application/json',
+      dataType: 'json',
+      data:data,
+      success: function(j_data){
+        successcb(j_data);
+      },
+      error: function(j_data){
+          errorcb(j_data);
+      }
+    });
+
+}
+</script>

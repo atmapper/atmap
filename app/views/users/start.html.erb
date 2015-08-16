@@ -1,0 +1,164 @@
+<div id="top_map_middle">
+	<h1 onclick="document.location.href='/'">ATMap</h1>
+<div class="top_map_middle_block">
+	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<table style="margin: 0 auto;"><tbody><tr><td>
+			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
+		</td><td style="padding: 0 0 0 10px;">
+			<form action="/map/" method="post" accept-charset="UTF-8">
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+			<div class="input-group">
+				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
+				</span>
+			</div>
+			</form>
+		</td></tr></tbody></table>
+	</div>
+</div>
+<div id="top_map_buttom"><br/><br/>
+
+<% flash.each do |key, value| %>
+  <%= content_tag(:div, value, class: "#{key}") %>
+<% end %>
+
+</div>
+<br clear="both"/>
+
+<div id="lanche" style="border-radius:5px">
+  <div class="modal_close" style="width:40px; float:right;">閉じる</div><br clear="both"/>
+  <div>
+  		<table><tbody><tr>
+  			<td style="width:200px;padding:5px;text-align:center;"><%= image_tag("tv.png") %><br clear="both"/><br/>サービス概要</td>
+  			<td style="width:200px;padding:5px;text-align:center;"><%= image_tag("badge.png") %><br clear="both"/><br/>バッチ一覧</td>
+  			<td style="width:200px;padding:5px;text-align:center;"><%= image_tag("calculator.png") %><br clear="both"/><br/>ATMapの記録</td>
+  			<td style="width:200px;padding:5px;text-align:center;"><%= image_tag("calendar.png") %><br clear="both"/><br/>メンテ予定</td>
+  		</tr><tr>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("comment.png") %><br clear="both"/><br/>コメント一覧</td>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("document.png") %><br clear="both"/><br/>ATMapの資料</td>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("man-user.png") %><br clear="both"/><br/>構築ブログ</td>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("twitter.png") %><br clear="both"/><br/>twitter公式</td>
+  		</tr><tr>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("closed-lock.png") %><br clear="both"/><br/>利用規約</td>
+  			<td style="width:200px;padding:25px 5px 5px 5px;text-align:center;"><%= image_tag("gear.png") %><br clear="both"/><br/>ユーザ削除</td>
+  			<td></td>
+  			<td></td>
+  		</tr></tbody></table>
+  </div>
+</div>
+<div id="trigger_id" style="border-radius:5px">
+  <div class="modal_close" style="width:40px; float:right;" id="regist_close">閉じる</div>
+  <div>
+  	<h4>ユーザ登録</h4>
+  	　<p>※ATMapは登録せずとも利用可能ですが、登録した場合自身が記録したATMを一覧表示したり、ATMのフォロー機能などよりATMapを便利に利用できます。</p>
+		<table style="width:90%;margin:0 auto;">
+			<tbody>
+				<tr><td style="padding:2px;"><input type="text" id="reg_mail" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+				<tr><td style="padding:2px;"><input type="text" id="reg_name" name="name" class="form-control" placeholder="ユーザ名"></td></tr>
+				<tr><td style="padding:2px;"><input type="password" id="reg_pass" name="password" class="form-control" placeholder="パスワード"></td></tr>
+				<tr><td style="padding:2px;">登録をクリックすることで、当サイト<a href="/info.html" target="blank">利用規約</a>に同意するものとします。</td></tr>
+				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="userregist();">登録する</button></td></tr>
+			</tbody>
+		</table>
+  </div>
+</div>
+<div id="loginbtn" style="border-radius:5px">
+  <div class="modal_close" id="login_close" style="width:40px; float:right;">閉じる</div>
+  <div>
+  	<h4>ログイン</h4>
+  	<p id="log_mes"></p>
+	<table style="width:90%;margin:0 auto;" cellspacing="10">
+		<tbody>
+			<tr><td style="padding:2px;"><input id="log_mail" type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+			<tr><td style="padding:2px;"><input id="log_pass" type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
+			<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="login();">ログイン</button></td></tr>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+</div>
+
+<br/>
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<h4>新着情報</h4>
+		<b># 2015/08/14（金）　メンテナンス予定のお知らせ</b><br/>
+		システム脆弱性対策のため、以下日程でサービスを停止してメンテナンスを実施します。時間中はシステムが利用できません。ご了承ください。<br/>
+		メンテ期間：2015/08/15（土） 0:00 〜 4:00
+
+<br/>
+<br/>
+		<b># 2015/08/14（金）　新機能実装のお知らせ</b><br/>
+		新しい機能をリリースしました。新しい機能をリリースしました。ユーザを登録していただければ、登録した内容を収集して同行の傾向を分析します。マイページの「ATAnalyze」から利用できます。新機能の概要はチュートリアルをご覧ください。これによって、行動パターンや傾向など、ATMapに記録されているデータを集計して、いままで知りえなかった情報を可視化します。
+<br/>
+<br/>
+過去のお知らせはこちらから
+
+	</div>
+</div>
+
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+	<h4>ユーザの動き</h4>
+	<b>見た</b>：セブンイレブン六郷土手駅前（ユーザ名）<br/>
+	<b>見た</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	<b>ATMap</b>：神奈川新町郵便局（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	</div>
+</div>
+
+</div>
+<br clear="both" />
+
+<footer style="padding:10px;">
+ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運営団体</a>　<a href="/info.html" title="利用規約とプライバシー" target="blank">利用規約とプライバシー</a>　</footer>
+<script type="text/javascript">
+function userregist() {
+	var data = $.toJSON({
+		email : document.getElementById("reg_mail").value,
+		name : document.getElementById("reg_name").value,
+		password : document.getElementById("reg_pass").value
+	});
+	$.ajax({
+	  type: 'post',
+	  url: '/users/create',
+	  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+	  contentType: 'application/json',
+	  dataType: 'json',
+	  data:data,
+	  success: function(json){
+	  	$("#regist_close").click();
+	  	alert("入力されたメールアドレスに確認用メールを送付しました。確認してください。")
+	  	document.getElementById("reg_mail").value = '';
+	  	document.getElementById("reg_name").value = '';
+	  	password : document.getElementById("reg_pass").value = '';
+	  },error: function(json){
+	  }
+	});
+}
+function login() {
+	//パラメータ取得
+	var data = $.toJSON({
+		email : document.getElementById("log_mail").value,
+		password : document.getElementById("log_pass").value
+	});
+	$.ajax({
+	  type: 'post',
+	  url: '/login/create',
+	  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+	  contentType: 'application/json',
+	  dataType: 'json',
+	  data:data,
+	  success: function(json){
+	  	$("#login_close").click();
+	  	$("#login_school").html("ようこそ！" + json[0]["name"] + "さん");
+	  },error: function(json){
+	  	$("#log_mes").html("ユーザが登録されていないか、パスワードが誤っています。");
+	  }
+	});
+}
+</script>

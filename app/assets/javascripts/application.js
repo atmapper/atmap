@@ -15,3 +15,25 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+
+$(function() {
+    $( 'a[rel*=leanModal]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+});
+ $(function() {
+    $( 'a[rel*=leanModal_login]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+});
+ $(function() {
+    $( 'a[rel*=leanModal_lancher]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+}); 

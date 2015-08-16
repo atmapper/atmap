@@ -8,13 +8,155 @@
   <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
   <style type="text/css">
 h1{
+  margin:10px 0 0 0;
   font-family: 'Fjalla One', sans-serif;
 }
 </style>
 </head>
 <body>
-<header></header>
+<div id="layout_head">
+	<div style="float:right;width:300px;" id="login_school">
+		<% if session[:id].blank? %>
+		<table  id="schoolchild" style="float:right;"><tbody><tr>
+			<td style="padding:0 0 0 10px;"><a rel="leanModal" href="#trigger_id">ATMapを始める</a></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='$("#loginA").click();'>ログイン</button></td>
+			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></a></td>
+		</tr></tbody></table>
+		<table id="schoolchild_login" style="float:right;display:none"><tbody><tr>
+			<td style="padding:0 0 0 10px;">ログインしてます</td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='logout();'>ログアウト</button></td>
+			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
+		</tr></tbody></table>
+		<% else %>
+		<table id="schoolchild" style="float:right;display:none;"><tbody><tr>
+			<td style="padding:0 0 0 10px;"><a rel="leanModal" href="#trigger_id">ATMapを始める</a></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='$("#loginA").click();'>ログイン</button></td>
+			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
+		</tr></tbody></table>
+		<table id="schoolchild_login" style="float:right;"><tbody><tr>
+			<td style="padding:0 0 0 10px;">ログインしてます</td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='logout();'>ログアウト</button></td>
+			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
+		</tr></tbody></table>
+		<% end %>
+		<a href="#loginbtn" id="loginA" style="display:none" rel="leanModal_login"></a>
+		<a href="#lanche"   id="lanche_link" style="display:none" rel="leanModal_lancher"></a>
+	</div>
+</div>
 <%= yield %>
-<footer>copy right 2015 ATMap</footer>
+
+<div id="trigger_id" style="border-radius:5px">
+  <div class="modal_close" style="width:40px; float:right;" id="regist_close">閉じる</div>
+  <div>
+  	<h4>ユーザ登録</h4>
+  	　<p>※ATMapは登録せずとも利用可能ですが、登録した場合自身が記録したATMを一覧表示したり、ATMのフォロー機能などよりATMapを便利に利用できます。</p>
+		<table style="width:90%;margin:0 auto;">
+			<tbody>
+				<tr><td style="padding:2px;"><input type="text" id="reg_mail" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+				<tr><td style="padding:2px;"><input type="text" id="reg_name" name="name" class="form-control" placeholder="ユーザ名"></td></tr>
+				<tr><td style="padding:2px;"><input type="password" id="reg_pass" name="password" class="form-control" placeholder="パスワード"></td></tr>
+				<tr><td style="padding:2px;">登録をクリックすることで、当サイト<a href="/info.html" target="blank">利用規約</a>に同意するものとします。</td></tr>
+				<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="userregist();">登録する</button></td></tr>
+			</tbody>
+		</table>
+  </div>
+</div>
+<div id="loginbtn" style="border-radius:5px">
+  <div class="modal_close" id="login_close" style="width:40px; float:right;">閉じる</div>
+  <div>
+  	<h4>ログイン</h4>
+  	<p id="log_mes"></p>
+	<table style="width:90%;margin:0 auto;" cellspacing="10">
+		<tbody>
+			<tr><td style="padding:2px;"><input id="log_mail" type="text" name="email" class="form-control" placeholder="メールアドレス"></td></tr>
+			<tr><td style="padding:2px;"><input id="log_pass" type="password" name="password" class="form-control" placeholder="パスワード"></td></tr>
+			<tr><td style="padding:2px;"><button type="button" class="btn btn-primary" style="float:right;" onclick="login();">ログイン</button></td></tr>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+</div>
+<div id="lanche" style="border-radius:5px">
+  <div class="modal_close" style="width:40px; float:right;">閉じる</div><br clear="both"/>
+  <div>
+  		<table><tbody><tr>
+  			<td class="lanche_td" ><img src="/assets/tv.png" /><br clear="both"/><br/>サービス概要</td>
+  			<td class="lanche_td" ><img src="/assets/calendar.png" onclick="window.open('https://www.google.com/calendar/embed?src=atmapper%40gmail.com&ctz=Asia/Tokyo')" ><br clear="both"/><br/>メンテ予定</td>
+  			<td class="lanche_td" ><img src="/assets/man-user.png" onclick="window.open('http://atmapper.hatenablog.com/')"><br clear="both"/><br/>構築ブログ</td>
+  			<td class="lanche_td" ><img src="/assets/twitter.png" onclick="window.open('https://twitter.com/ATMapper')") ><br clear="both"/><br/>twitter公式</td>
+  		</tr><tr>
+  			<td class="lanche_td" ><img src="/assets/closed-lock.png" onclick="window.open('/info.html')") /><br clear="both"/><br/>利用規約</td>
+  			<td class="lanche_td"><%= image_tag("gear.png") %><br clear="both"/><br/>ユーザ削除</td>
+  			<td></td>
+  			<td></td>
+  		</tr></tbody></table>
+  </div>
+</div>
+<script type="text/javascript">
+function userregist() {
+	var data = $.toJSON({
+		email : document.getElementById("reg_mail").value,
+		name : document.getElementById("reg_name").value,
+		password : document.getElementById("reg_pass").value
+	});
+	$.ajax({
+	  type: 'post',
+	  url: '/users/create',
+	  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+	  contentType: 'application/json',
+	  dataType: 'json',
+	  data:data,
+	  success: function(json){
+	  	$("#regist_close").click();
+	  	alert("入力されたメールアドレスに確認用メールを送付しました。確認してください。")
+	  	document.getElementById("reg_mail").value = '';
+	  	document.getElementById("reg_name").value = '';
+	  	password : document.getElementById("reg_pass").value = '';
+	  },error: function(json){
+	  }
+	});
+}
+function login() {
+	//パラメータ取得
+	var data = $.toJSON({
+		email : document.getElementById("log_mail").value,
+		password : document.getElementById("log_pass").value
+	});
+	$.ajax({
+	  type: 'post',
+	  url: '/login/create',
+	  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+	  contentType: 'application/json',
+	  dataType: 'json',
+	  data:data,
+	  success: function(json){
+	  	$("#login_close").click();
+	  	$("#schoolchild_login").show();;
+	  	$("#schoolchild").hide();;
+	  	document.getElementById("log_mail").value = '';
+	  	document.getElementById("log_pass").value = '';
+	  },error: function(json){
+	  	$("#log_mes").html("ユーザが登録されていないか、パスワードが誤っています。");
+	  	document.getElementById("log_pass").value = '';
+	  }
+	});
+}
+function logout() {
+	//パラメータ取得
+	$.ajax({
+	  type: 'get',
+	  url: '/login/destroy',
+	  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+	  contentType: 'application/json',
+	  dataType: 'json',
+	  data:null,
+	  success: function(json){
+	  	$("#schoolchild_login").hide();;
+	  	$("#schoolchild").show();;
+	  },error: function(json){
+	  }
+	});
+}
+</script>
 </body>
 </html>

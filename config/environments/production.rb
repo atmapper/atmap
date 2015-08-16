@@ -47,7 +47,16 @@ Rails.application.configure do
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
-
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:               'smtp.gmail.com',
+    port:                  587,
+    domain:                'atmap.top',
+    user_name:             'atmapper@gmail.com',
+    password:              '',
+    authentication:        'plain',
+    enable_starttls_auto:  true
+  }
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
 

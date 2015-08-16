@@ -14,16 +14,15 @@
  *= require_self
  */
 
+a:hover {
+}
 body, header, footer {
  	margin:0;
  	padding:0;
 }
-footer {
-	text-align: center;
-}
 #top_map {
-	margin:0 auto;
-	width:90%;
+	margin:10px auto 0 auto;
+	width:98%;
 	overflow: hidden;
 }
 .top_map_block {
@@ -50,15 +49,69 @@ footer {
 	width:30%;
 	line-height: 20px;
 }
-#top_map_middle {
-	margin:0 auto;
-	width:90%;
+#layout_head {
+  margin:0 auto;
+  width:98%;
 }
 #top_map_middle {
-	margin:0 auto;
-	width:90%;
+  margin:0 auto;
+  width:98%;
 }
+.top_map_middle_block {
+	padding:10px;
+	margin:0 auto;
+}
+.top_map_buttom_block {
+  padding: 0 10px 10px 10px;
+  margin:0 auto;
+}
+
 #top_map_buttom {
-	margin:10px auto 0 auto;
-	width:90%;
+	padding:0 10px;
+}
+.info_buttom_block {
+  margin:0 0 0 10px;
+  width: 48%;
+  min-width: 300px;
+  float:left;
+}
+#trigger_id{
+  background: none repeat scroll 0 0 #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+  display: none;
+  padding: 20px;
+  width: 50%;
+  min-width: 350px;
+ }
+#loginbtn{
+  background: none repeat scroll 0 0 #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+  display: none;
+  padding: 20px;
+  width: 50%;
+  min-width: 350px;
+ }
+#lanche{
+  background: none repeat scroll 0 0 #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+  display: none;
+  padding: 20px;
+  width: 50%;
+  min-width: 350px;
+ }
+ #lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+.lanche_td {
+  width:150px;
+  padding:10px;
+  text-align:center;
+  border:1px solid #fff;
 }
