@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ATMap - サービス概要</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+</head>
+<body style="font-size:13px;">
+<h2>ATMapはどんなサービス？</h2>
+１.ATMの設置場所をキーワードで探す<br/>
+２.自身の近くにあるATMを地図上に登録する<br/>
+３.日本全国に設置されているさまざまな銀行のATMを見る<br/>
+※ユーザを登録しなくても、ATMを登録可能です。登録すると登録したATMを一覧表示できるなど、より便利に利用することができます。
+
+<h2>主要機能</h2>
+・<b>現在地起点のATM探し</b><br/>
+現在地をGPSで取得して、付近のATMを表示する。試験機能として現在地からATMまでのルートナビを試験運用中<br/><br/>
+・<b>キーワード検索起点のATM探し</b><br/>
+駅、建物などキーワードを入力して、ATMを表示する。試験機能として現在地からATMまでのルートナビを試験運用中<br/><br/>
+・<b>ATMを見る</b><br/>
+ATMの詳細を確認でき、それぞれにコメント登録する<br/><br/>
+・<b>マイページ（ユーザ登録後利用可能）</b><br/>
+登録したATMなど、サービスの利用記録をサマリして表示する<br/><br/>
+・<b>ATMクリップ（ユーザ登録後利用可能）</b><br/>
+ATMをクリップして、マイページに一覧表示する<br/><br/>
+・<b>監査ログ（ユーザ登録後利用可能）</b><br/>
+ユーザのログイン、ログイン試行失敗履歴を記録、参照する<br/><br/>
+・<b>AUTH認証（ユーザ登録後利用可能）</b><br/>
+facebook、yahooの登録情報からATMapにログインする<br/><br/>
+
+<h2>このサービス構築について</h2>
+このサービスは以下の技術、OSSによって成り立っています。<br/>
+先人が築いたものを利用できる幸運に感謝いたします。<br/>
+（詳細は構築ブログで少しずつ取り上げていきたいと思います）<br/>
+・ruby on rails<br/>
+・さくらのクラウド（Centos7）<br/>
+・Nginx<br/>
+・unicorn<br/>
+・memcached<br/>
+・MySQL<br/>
+・cassandra<br/>
+・fluentd<br/>
+・googlemap API<br/>
+
+</body>
+</html>
