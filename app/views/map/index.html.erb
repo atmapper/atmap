@@ -40,14 +40,164 @@ button.onclick = function() {
 		<span class="input-group-addon">メ　モ</span>
 	  	<input type="text" name="memo" id="memo" class="form-control" placeholder="最大255文字" />
 	</div>
-	<select  class="form-control" name="kind" id="kind">
-  		<option value="1">みずほ</option>
-  		<option value="2">三井住友</option>
-  		<option value="3">三菱東京UFJ</option>
-  		<option value="4">セブン銀行</option>
-	</select>
+	銀行種類
+	<input type="hidden" name="kind" id="kind" value="0" />
+	<img src="/assets/1.png" onclick="select(1)"/>
+	<img src="/assets/2.png" onclick="select(2)"/>
+	<img src="/assets/3.png" onclick="select(3)"/>
+	<img src="/assets/4.png" onclick="select(4)"/>
+	<img src="/assets/chihou.png" onclick='$("#bankkind").click();'/>
+	<a href="#kind_lanche" rel="leanModal_kindlancher" id="bankkind">その他銀行</a>
 	<button class="btn btn-large btn-block btn-primary" type="button" onclick="regist_map();">登録する</button>
 </div>
+</div>
+
+<div id="kind_lanche" style="border-radius:5px">
+  <div class="kind_close" style="width:40px; float:right;">閉じる</div><br clear="both"/>
+  <div>
+  	<div id="name_sort">
+		<a href="javascript:void(0)" onclick="select(1)">みずほ銀行</a>　
+		<a href="javascript:void(0)" onclick="select(2)">三菱東京ＵＦＪ銀行</a>　
+		<a href="javascript:void(0)" onclick="select(3)">三井住友銀行</a>　
+		<a href="javascript:void(0)" onclick="select(5)">りそな銀行</a>　
+		<a href="javascript:void(0)" onclick="select(6)">あおぞら信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(7)">オリックス銀行</a>　
+		<a href="javascript:void(0)" onclick="select(8)">資産管理サービス信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(9)">しんきん信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(10)">新生信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(11)">ステート・ストリート信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(12)">三井住友信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(13)">SMBC信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(14)">日証金信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(15)">日本トラスティ・サービス信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(16)">日本マスタートラスト信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(17)">ニューヨークメロン信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(18)">農中信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(19)">野村信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(20)">みずほ信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(21)">三菱UFJ信託銀行</a>　
+		<a href="javascript:void(0)" onclick="select(22)">あおぞら銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(23)">イオン銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(24)">SBJ銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(25)">シティバンク銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(26)">じぶん銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(27)">ジャパンネット銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(28)">新銀行東京（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(29)">新生銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(30)">住信SBIネット銀行株（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(31)">整理回収機構</a>　
+		<a href="javascript:void(0)" onclick="select(4)">セブン銀行</a>　
+		<a href="javascript:void(0)" onclick="select(32)">ソニー銀行</a>　
+		<a href="javascript:void(0)" onclick="select(33)">大和ネクスト銀行</a>　
+		<a href="javascript:void(0)" onclick="select(34)">楽天銀行</a>　
+		<a href="javascript:void(0)" onclick="select(35)">ゆうちょ銀行</a>　
+		<a href="javascript:void(0)" onclick="select(36)">北海道銀行（北海道）</a>　
+		<a href="javascript:void(0)" onclick="select(37)">青森銀行（青森県）</a>　
+		<a href="javascript:void(0)" onclick="select(38)">みちのく銀行（青森県）</a>　
+		<a href="javascript:void(0)" onclick="select(39)">岩手銀行（岩手県）</a>　
+		<a href="javascript:void(0)" onclick="select(40)">東北銀行（岩手県）</a>　
+		<a href="javascript:void(0)" onclick="select(41)">七十七銀行（宮城県）</a>　
+		<a href="javascript:void(0)" onclick="select(42)">秋田銀行（秋田県）</a>　
+		<a href="javascript:void(0)" onclick="select(43)">北都銀行（秋田県）</a>　
+		<a href="javascript:void(0)" onclick="select(44)">荘内銀行（山形県）</a>　
+		<a href="javascript:void(0)" onclick="select(45)">山形銀行（山形県）</a>　
+		<a href="javascript:void(0)" onclick="select(46)">東邦銀行（福島県）</a>　
+		<a href="javascript:void(0)" onclick="select(47)">常陽銀行（茨城県）</a>　
+		<a href="javascript:void(0)" onclick="select(48)">筑波銀行（茨城県）</a>　
+		<a href="javascript:void(0)" onclick="select(49)">足利銀行（栃木県）</a>　
+		<a href="javascript:void(0)" onclick="select(50)">群馬銀行（群馬県）</a>　
+		<a href="javascript:void(0)" onclick="select(51)">武蔵野銀行（埼玉県）</a>　
+		<a href="javascript:void(0)" onclick="select(52)">千葉銀行（千葉県）</a>　
+		<a href="javascript:void(0)" onclick="select(53)">千葉興業銀行（千葉県）</a>　
+		<a href="javascript:void(0)" onclick="select(54)">東京都民銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(55)">横浜銀行（神奈川県）</a>　
+		<a href="javascript:void(0)" onclick="select(56)">第四銀行（新潟県）</a>　
+		<a href="javascript:void(0)" onclick="select(57)">北越銀行（新潟県）</a>　
+		<a href="javascript:void(0)" onclick="select(58)">山梨中央銀行（山梨県）</a>　
+		<a href="javascript:void(0)" onclick="select(59)">八十二銀行（長野県）</a>　
+		<a href="javascript:void(0)" onclick="select(60)">北陸銀行（富山県）</a>　
+		<a href="javascript:void(0)" onclick="select(61)">富山銀行（富山県）</a>　
+		<a href="javascript:void(0)" onclick="select(62)">北國銀行（石川県）</a>　
+		<a href="javascript:void(0)" onclick="select(63)">福井銀行（福井県）</a>　
+		<a href="javascript:void(0)" onclick="select(64)">大垣共立銀行（岐阜県）</a>　
+		<a href="javascript:void(0)" onclick="select(65)">十六銀行（岐阜県）</a>　
+		<a href="javascript:void(0)" onclick="select(66)">静岡銀行（静岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(67)">スルガ銀行（静岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(68)">清水銀行（静岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(69)">三重銀行（三重県）</a>　
+		<a href="javascript:void(0)" onclick="select(70)">百五銀行（三重県）</a>　
+		<a href="javascript:void(0)" onclick="select(71)">滋賀銀行（滋賀県）</a>　
+		<a href="javascript:void(0)" onclick="select(72)">京都銀行（京都府）</a>　
+		<a href="javascript:void(0)" onclick="select(73)">近畿大阪銀行（大阪府）</a>　
+		<a href="javascript:void(0)" onclick="select(74)">池田泉州銀行（大阪府）</a>　
+		<a href="javascript:void(0)" onclick="select(75)">南都銀行（奈良県）</a>　
+		<a href="javascript:void(0)" onclick="select(76)">紀陽銀行（和歌山県）</a>　
+		<a href="javascript:void(0)" onclick="select(77)">但馬銀行（兵庫県）</a>　
+		<a href="javascript:void(0)" onclick="select(78)">鳥取銀行（鳥取県）</a>　
+		<a href="javascript:void(0)" onclick="select(79)">山陰合同銀行（島根県）</a>　
+		<a href="javascript:void(0)" onclick="select(80)">中国銀行（岡山県）</a>　
+		<a href="javascript:void(0)" onclick="select(81)">広島銀行（広島県）</a>　
+		<a href="javascript:void(0)" onclick="select(82)">山口銀行（山口県）</a>　
+		<a href="javascript:void(0)" onclick="select(83)">阿波銀行（徳島県）</a>　
+		<a href="javascript:void(0)" onclick="select(84)">百十四銀行（香川県）</a>　
+		<a href="javascript:void(0)" onclick="select(85)">伊予銀行（愛媛県）</a>　
+		<a href="javascript:void(0)" onclick="select(86)">四国銀行（高知県）</a>　
+		<a href="javascript:void(0)" onclick="select(87)">福岡銀行（福岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(88)">筑邦銀行（福岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(89)">西日本シティ銀行（福岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(90)">北九州銀行（福岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(91)">佐賀銀行（佐賀県）</a>　
+		<a href="javascript:void(0)" onclick="select(92)">十八銀行（佐賀県）</a>　
+		<a href="javascript:void(0)" onclick="select(93)">親和銀行（長崎県）</a>　
+		<a href="javascript:void(0)" onclick="select(94)">肥後銀行（長崎県）</a>　
+		<a href="javascript:void(0)" onclick="select(95)">大分銀行（大分県）</a>　
+		<a href="javascript:void(0)" onclick="select(96)">宮崎銀行（宮崎県）</a>　
+		<a href="javascript:void(0)" onclick="select(97)">鹿児島銀行（鹿児島県）</a>　
+		<a href="javascript:void(0)" onclick="select(98)">琉球銀行（沖縄県）</a>　
+		<a href="javascript:void(0)" onclick="select(99)">沖縄銀行（沖縄県）</a>　
+		<a href="javascript:void(0)" onclick="select(100)">北洋銀行（北海道）</a>　
+		<a href="javascript:void(0)" onclick="select(101)">きらやか銀行（山形県）</a>　
+		<a href="javascript:void(0)" onclick="select(102)">北日本銀行（岩手県）</a>　
+		<a href="javascript:void(0)" onclick="select(103)">仙台銀行（宮城県）</a>　
+		<a href="javascript:void(0)" onclick="select(104)">福島銀行（福島県）</a>　
+		<a href="javascript:void(0)" onclick="select(105)">大東銀行（福島県）</a>　
+		<a href="javascript:void(0)" onclick="select(106)">東和銀行（群馬県）</a>　
+		<a href="javascript:void(0)" onclick="select(107)">栃木銀行（栃木県）</a>　
+		<a href="javascript:void(0)" onclick="select(108)">京葉銀行（千葉県）</a>　
+		<a href="javascript:void(0)" onclick="select(109)">東日本銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(110)">東京スター銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(111)">八千代銀行（東京都）</a>　
+		<a href="javascript:void(0)" onclick="select(112)">神奈川銀行（神奈川銀行）</a>　
+		<a href="javascript:void(0)" onclick="select(113)">大光銀行（新潟県）</a>　
+		<a href="javascript:void(0)" onclick="select(114)">長野銀行（長野県）</a>　
+		<a href="javascript:void(0)" onclick="select(115)">富山第一銀行（富山県）</a>　
+		<a href="javascript:void(0)" onclick="select(116)">福邦銀行（福井県）</a>　
+		<a href="javascript:void(0)" onclick="select(117)">静岡中央銀行（静岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(118)">愛知銀行（愛知県）</a>　
+		<a href="javascript:void(0)" onclick="select(119)">名古屋銀行（愛知県）</a>　
+		<a href="javascript:void(0)" onclick="select(120)">中京銀行（愛知県）</a>　
+		<a href="javascript:void(0)" onclick="select(121)">第三銀行（三重県）</a>　
+		<a href="javascript:void(0)" onclick="select(122)">関西アーバン銀行（大阪府）</a>　
+		<a href="javascript:void(0)" onclick="select(123)">大正銀行（大阪府）</a>　
+		<a href="javascript:void(0)" onclick="select(124)">みなと銀行（兵庫県）</a>　
+		<a href="javascript:void(0)" onclick="select(125)">島根銀行（島根県）</a>　
+		<a href="javascript:void(0)" onclick="select(126)">トマト銀行（岡山県）</a>　
+		<a href="javascript:void(0)" onclick="select(127)">もみじ銀行（広島県）</a>　
+		<a href="javascript:void(0)" onclick="select(128)">西京銀行（山口県）</a>　
+		<a href="javascript:void(0)" onclick="select(129)">徳島銀行（徳島県）</a>　
+		<a href="javascript:void(0)" onclick="select(130)">香川銀行（香川県）</a>　
+		<a href="javascript:void(0)" onclick="select(131)">愛媛銀行（愛媛県）</a>　
+		<a href="javascript:void(0)" onclick="select(132)">高知銀行（高知県）</a>　
+		<a href="javascript:void(0)" onclick="select(133)">福岡中央銀行（福岡県）</a>　
+		<a href="javascript:void(0)" onclick="select(134)">佐賀共栄銀行（佐賀県）</a>　
+		<a href="javascript:void(0)" onclick="select(135)">長崎銀行（長崎県）</a>　
+		<a href="javascript:void(0)" onclick="select(136)">熊本銀行（熊本県）</a>　
+		<a href="javascript:void(0)" onclick="select(137)">豊和銀行（大分県）</a>　
+		<a href="javascript:void(0)" onclick="select(138)">宮崎太陽銀行（宮崎県）</a>　
+		<a href="javascript:void(0)" onclick="select(139)">南日本銀行（鹿児島県）</a>　
+		<a href="javascript:void(0)" onclick="select(140)">沖縄海邦銀行（沖縄県</a>　
+  	</div>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -206,12 +356,16 @@ function ajaxrequest(data,type,url,successcb,errorcb){
 function update_maker(json) {
 var markers = new Array(); 
     for(i=0;i<json.length;i++){
-    	if (json[i]['kind'] == null) {
+    	if (json[i]['kind'] == '1'
+    		|| json[i]['kind'] == '2'
+    		|| json[i]['kind'] == '3'
+    		|| json[i]['kind'] == '4') {
 			markers[i] = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
 	   			json[i]['lat'],
 	   			json[i]['lgn']),
-	   			map: map
+	   			map: map,
+	   			icon: "/assets/"+ json[i]['kind'] +".png"
 	   		});
     	} else {
 			markers[i] = new google.maps.Marker({
@@ -219,7 +373,7 @@ var markers = new Array();
 	   			json[i]['lat'],
 	   			json[i]['lgn']),
 	   			map: map,
-	   			icon: "/assets/"+ json[i]['kind'] +".png"
+	   			icon: "/assets/chihou.png"
 	   		});    		
     	}
 	   	onMarkerClick(markers[i], json[i]);
@@ -292,5 +446,10 @@ function regist_map() {
 	function(j_data){
 		alert("sorry, this system is busy. Please try again later.")
 	});
+}
+function select(kind_no) {
+	document.getElementById("kind").value = kind_no;
+	$(".kind_close").click();
+
 }
 </script>

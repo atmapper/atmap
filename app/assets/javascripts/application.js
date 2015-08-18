@@ -37,3 +37,10 @@ $(function() {
         closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
     });
 }); 
+ $(function() {
+    $( 'a[rel*=leanModal_kindlancher]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".kind_close"  // 閉じるボタンのCSS classを指定
+    });
+}); 

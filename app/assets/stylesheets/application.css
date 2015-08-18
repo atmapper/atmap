@@ -99,6 +99,14 @@ body, header, footer {
   width: 50%;
   min-width: 350px;
  }
+#kind_lanche{
+  background: none repeat scroll 0 0 #FFFFFF;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+  display: none;
+  padding: 20px;
+  width: 80%;
+  min-width: 350px;
+ }
  #lean_overlay {
     position: fixed;
     z-index:100;
