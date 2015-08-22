@@ -1,24 +1,6 @@
 <div id="top_map_middle">
-<h1 onclick="document.location.href='/'">ATMap</h1>
-<div class="top_map_middle_block">
-	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
-		<table style="margin: 0 auto;"><tbody><tr><td>
-			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
-		</td><td style="padding: 0 0 0 10px;">
-			<form action="/map/" method="post" accept-charset="UTF-8">
-				<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-			<div class="input-group">
-				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
-				</span>
-			</div>
-			</form>
-		</td></tr></tbody></table>
-	</div>
-</div>
 <div id="top_map_buttom">
-	<div id="act_log" style="width:60%;min-width: 350px;height:250px;float:left;">
+	<div id="act_log" style="width:60%;min-width: 350px;hrefeight:250px;float:left;">
 
 
 	</div>
@@ -38,13 +20,38 @@
 <footer style="padding:10px;">
 ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運営団体</a>　<a href="/info.html" title="利用規約とプライバシー" target="blank">利用規約とプライバシー</a></footer>
 <script type="text/javascript">
+JSON.parseWithDate = function(str){
+    function reviver(key, val){
+        if (typeof(val) == "string" &&
+            val.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)){
+            return new Date(Date.parse(val));
+        }
+        return val;
+    }
+    return JSON.parse(str, reviver);
+};
+
 ajaxrequest(null,"get","/play/info",
 	function(j_data){
-		console.log(j_data["clip"][0].length);
-		value = "<b>登録履歴（最新から10件前後表示）</b><br/>";
+		value = "<b>マップ登録履歴（最新から10件前後表示）</b><br/>";
 		for (m=0;m<j_data["map"][0].length;m++) {
-			value += '<h4>' + j_data["map"][0][m]["created_at"] + j_data["map"][0][m]["mapname"] + 'を登録しました</h4>';
+			var date = new Date(j_data["map"][0][m]["created_at"]);
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var day = date.getDate();
+			var hh = date.getHours();
+			var mm = date.getMinutes();
+			var ss = date.getSeconds();
+			if ( month < 10 ) {
+			　　month = '0' + month;
+			}
+			if ( day < 10 ) {
+			　　day = '0' + day;
+			}
+			var str = year + '/' + month + '/' + day + " " + hh + ':' + mm + ':' + ss;
+			value += '<h4>' + str + j_data["map"][0][m]["mapname"] + 'を登録しました</h4>';
 		}
+		value += "<b>クリップ登録履歴（最新から10件前後表示）</b><br/>";
 		for (c=0;c<j_data["clip"][0].length;c++) {
 			value += '<h4>' + j_data["clip"][0][c]["created_at"] + ' ATMをクリップしました。</h4>';
 		}
@@ -69,6 +76,5 @@ function ajaxrequest(data,type,url,successcb,errorcb){
           errorcb(j_data);
       }
     });
-
 }
 </script>

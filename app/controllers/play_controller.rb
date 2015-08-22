@@ -2,7 +2,7 @@ class PlayController < ApplicationController
   def index
   end
   def info
-  	map  = Map.where("regist_user = ? ", session[:id])
+  	map  = Map.find_by_sql(["select mapname, DATE_FORMAT(created_at,'%Y/%m/%d %k:%i:%s') created_at from maps where regist_user = ? ",session[:id]])
   	if map.blank?
   		map = '{}'
   	end

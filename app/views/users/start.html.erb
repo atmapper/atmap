@@ -1,22 +1,4 @@
 <div id="top_map_middle">
-	<h1 onclick="document.location.href='/'">ATMap</h1>
-<div class="top_map_middle_block">
-	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
-		<table style="margin: 0 auto;"><tbody><tr><td>
-			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
-		</td><td style="padding: 0 0 0 10px;">
-			<form action="/map/" method="post" accept-charset="UTF-8">
-			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-			<div class="input-group">
-				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
-				</span>
-			</div>
-			</form>
-		</td></tr></tbody></table>
-	</div>
-</div>
 <div id="top_map_buttom"><br/><br/>
 
 <% flash.each do |key, value| %>

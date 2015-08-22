@@ -1,25 +1,7 @@
-<div id="top_map_middle">
+<div class="top_map_middle">
 
-	<h1>ATMap</h1>
-<div class="top_map_middle_block">
-	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
-		<table style="margin: 0 auto;"><tbody><tr><td>
-			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
-		</td><td style="padding: 0 0 0 10px;">
-			<form action="/map/" method="post" accept-charset="UTF-8">
-			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-			<div class="input-group">
-				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
-				</span>
-			</div>
-			</form>
-		</td></tr></tbody></table>
-	</div>
-</div>
 <div id="top_map_buttom">
-	<script src="http://maps.googleapis.com/maps/api/js?&sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?&sensor=false"></script>
 	<div id="map-canvas" style="width:60%;min-width: 350px;height:250px;float:left;"></div>
 	<div style="width:35%;min-width:350px;float:left;margin: 0 0 0 10px;">
 		<b>ATMapとはこんなサービスです</b><br/>
@@ -34,8 +16,8 @@
 <div class="info_buttom_block">
 	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
 		<h4>新着情報</h4>
-		<b># 2015/08/14（金）　メンテナンス予定のお知らせ</b><br/>
-		システム脆弱性対策のため、以下日程でサービスを停止してメンテナンスを実施します。時間中はシステムが利用できません。ご了承ください。<br/>
+		<b># 2015/08/23（土）　Webサイト全体の通信を暗号化しました</b><br/>
+		メールアドレス、パスワードの入力など個人情報を伴うため、通信を暗号化しました。<br/>
 		メンテ期間：2015/08/15（土） 0:00 〜 4:00
 
 <br/>

@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-  <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
   <style type="text/css">
 h1{
   margin:10px 0 0 0;
@@ -15,33 +15,53 @@ h1{
 </head>
 <body>
 <div id="layout_head">
-	<div style="float:right;width:300px;" id="login_school">
+	<div style="float:right;width:250px;" id="login_school">
 		<% if session[:id].blank? %>
 		<table  id="schoolchild" style="float:right;"><tbody><tr>
 			<td style="padding:0 0 0 10px;"><a rel="leanModal" href="#trigger_id">ATMapを始める</a></td>
-			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='$("#loginA").click();'>ログイン</button></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-warning" onclick='$("#loginA").click();'>ログイン</button></td>
 			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></a></td>
 		</tr></tbody></table>
 		<table id="schoolchild_login" style="float:right;display:none"><tbody><tr>
-			<td style="padding:0 0 0 10px;">ログインしてます</td>
-			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='logout();'>ログアウト</button></td>
+			<td style="padding:0 0 0 10px;"><a href="/play">マイページ</a></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-warning" onclick='logout();'>ログアウト</button></td>
 			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
 		</tr></tbody></table>
 		<% else %>
 		<table id="schoolchild" style="float:right;display:none;"><tbody><tr>
 			<td style="padding:0 0 0 10px;"><a rel="leanModal" href="#trigger_id">ATMapを始める</a></td>
-			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='$("#loginA").click();'>ログイン</button></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-warning" onclick='$("#loginA").click();'>ログイン</button></td>
 			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
 		</tr></tbody></table>
 		<table id="schoolchild_login" style="float:right;"><tbody><tr>
-			<td style="padding:0 0 0 10px;">ログインしてます</td>
-			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-primary" onclick='logout();'>ログアウト</button></td>
+			<td style="padding:0 0 0 10px;"><a href="/play">マイページ</a></td>
+			<td style="padding:0 0 0 10px;"><button type="button" class="btn btn-warning" onclick='logout();'>ログアウト</button></td>
 			<td style="padding:0 0 0 10px;"><img src="/assets/tv.png" onclick='$("#lanche_link").click();' width="30" height="30"></td>
 		</tr></tbody></table>
 		<% end %>
 		<a href="#loginbtn" id="loginA" style="display:none" rel="leanModal_login"></a>
 		<a href="#lanche"   id="lanche_link" style="display:none" rel="leanModal_lancher"></a>
 	</div>
+</div>
+<div class="top_map_middle">
+	<h1 onclick="location.href = '/';">ATMap</h1>
+<div class="top_map_middle_block">
+	<div style="padding:10px 20px;border:1px solid LightGrey;background-color:#F0F8FF;border 1px solid #87CEEB;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<table style="margin: 0 auto;"><tbody><tr><td>
+			<button type="button" class="btn btn-default">現在地付近のATMを検索する</button>
+		</td><td style="padding: 0 0 0 10px;">
+			<form action="/map/" method="post" accept-charset="UTF-8">
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+			<div class="input-group">
+				<input type="text" name="keyword" class="form-control" placeholder="キーワード検索">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default" onclick="this.form.submit();">検索</button>
+				</span>
+			</div>
+			</form>
+		</td></tr></tbody></table>
+	</div>
+</div>
 </div>
 <%= yield %>
 
@@ -93,6 +113,34 @@ h1{
   </div>
 </div>
 <script type="text/javascript">
+$(function() {
+    $( 'a[rel*=leanModal]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+});
+ $(function() {
+    $( 'a[rel*=leanModal_login]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+});
+ $(function() {
+    $( 'a[rel*=leanModal_lancher]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".modal_close"  // 閉じるボタンのCSS classを指定
+    });
+}); 
+ $(function() {
+    $( 'a[rel*=leanModal_kindlancher]').leanModal({
+        top: 50,                     // モーダルウィンドウの縦位置を指定
+        overlay : 0.5,               // 背面の透明度 
+        closeButton: ".kind_close"  // 閉じるボタンのCSS classを指定
+    });
+}); 
 function userregist() {
 	var data = $.toJSON({
 		email : document.getElementById("reg_mail").value,
