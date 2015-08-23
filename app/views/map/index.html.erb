@@ -367,9 +367,12 @@ function onMarkerClick(marker, info){
 		    	+ '<b>' + info["mapname"] + '</b><br/>'
 		    	+ info['memo']
 		    	+ '<br clear="both" /><br/><br/>'
-		    	+ '<img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')"; >'
-		    	+ '<img src="/assets/comment.png" height="36" width="36" onclick="map_set(' + info['id'] + ')";  >'
-		    	+ '<img src="/assets/clip.png" height="36" width="36" onclick=clip_set(' + info['id'] + '); >'
+		    	+ '<table><tbody><tr>'
+		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')";><br/>ルート案内</td>'
+		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/comment.png" height="36" width="36" onclick="map_set(' + info['id'] + ')";><br/>コメント</td>'
+		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/clip.png" height="36" width="36" onclick=clip_set(' + info['id'] + ');><br/>クリップ</td>'
+		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/tv.png" height="36" width="36" onclick="window.open(\'/myself.html\');"><br/>機能説明</td>'
+		    	+ '</tr></tbody></table>'
 		    	+ '</div>'
 	  		});
 	  		myInfoWindow.open(map, marker);
@@ -394,6 +397,7 @@ function clip_set(mapid) {
 	});
 	ajaxrequest(data,"post","/map/clip",
 	function(j_data){
+		endtoast();
 	},
 	function(j_data){
 		if(j_data.status == 401){
@@ -429,4 +433,20 @@ function select(kind_no) {
 	$(".kind_close").click();
 
 }
+function endtoast() {
+$.toast({ 
+  heading: '登録しました',
+  width: '300px',
+  text:'このATMをクリップしました。<br/>マイページからいつでも参照できます。',
+  showHideTransition : 'fade',
+  textColor : '#eee',
+  allowToastClose : true,
+  hideAfter : 5000,
+  stack : 1,
+  textAlign : 'left',
+  icon: 'success',
+  position : 'top-right'
+})
+}
+
 </script>
