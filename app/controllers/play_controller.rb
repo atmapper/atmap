@@ -1,4 +1,6 @@
 class PlayController < ApplicationController
+  skip_before_filter :authorize ,
+                     :only => :allinfo
   def index
   end
   def info

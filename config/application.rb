@@ -9,6 +9,7 @@ Bundler.require(*Rails.groups)
 module Atmap
   class Application < Rails::Application
     config.active_record.default_timezone = :local
+    I18n.enforce_available_locales = false
     config.time_zone = 'Tokyo'
     config.i18n.default_locale = :ja
     # Settings in config/environments/* take precedence over those specified here.

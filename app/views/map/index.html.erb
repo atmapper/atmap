@@ -333,10 +333,7 @@ function ajaxrequest(data,type,url,successcb,errorcb){
 function update_maker(json) {
 var markers = new Array(); 
     for(i=0;i<json.length;i++){
-    	if (json[i]['kind'] == '1'
-    		|| json[i]['kind'] == '2'
-    		|| json[i]['kind'] == '3'
-    		|| json[i]['kind'] == '4') {
+    	if (json[i]['kind'] > 0 && json[i]['kind'] < 10 || json[i]['kind'] == 35 ) {
 			markers[i] = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
 	   			json[i]['lat'],
