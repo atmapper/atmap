@@ -1,34 +1,44 @@
 <div id="top_map_middle">
-
 <div class="top_map_buttom_block">
+
 <script src="https://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
 <div id="map-canvas" style="width:100%;height:400px;"></div>
 </div>
-<div id="top_map_middle">
-<div style="width:600px;">
-	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  	<input type="hidden" name="lat" id="lat" value=""/>
-  	<input type="hidden" name="lgn" id="lgn" value=""/>
-	<div class="input-group">
-		<span class="input-group-addon">ATM名</span>
-	  	<input type="text" name="mapname" id="mapname" class="form-control" placeholder="最大100文字" />
-	</div>
-	<div class="input-group">
-		<span class="input-group-addon">メ　モ</span>
-	  	<input type="text" name="memo" id="memo" class="form-control" placeholder="最大255文字" />
-	</div>
-	銀行種類
-	<input type="hidden" name="kind" id="kind" value="0" />
-	<img src="/assets/1.png" onclick="select(1)"/>
-	<img src="/assets/2.png" onclick="select(2)"/>
-	<img src="/assets/3.png" onclick="select(3)"/>
-	<img src="/assets/4.png" onclick="select(4)"/>
-	<img src="/assets/chihou.png" onclick='$("#bankkind").click();'/>
-	<a href="#kind_lanche" rel="leanModal_kindlancher" id="bankkind">その他銀行</a>
-	<button class="btn btn-large btn-block btn-primary" type="button" onclick="regist_map();">登録する</button>
+<div class="top_map_buttom_block">
+	<table id="input_form" style="width:100%"><tbody><tr>
+		<td style="width:5%;min-width:100px;">
+			<div style="background-color:#5cb85c;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_s();">
+			検索機能<br/>切り替え
+			</div>
+		</td>
+		<td style="padding:10px;width:95%;">
+			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+		  	<input type="hidden" name="lat" id="lat" value=""/>
+		  	<input type="hidden" name="lgn" id="lgn" value=""/>
+			<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名：最大100文字" />
+			<input type="text" name="memo" id="memo" class="form-control" placeholder="メモ（任意）：最大255文字" />
+			銀行種類
+			<input type="hidden" name="kind" id="kind" value="0" />
+			<img src="/assets/1.png" onclick="select(1)"/>
+			<img src="/assets/2.png" onclick="select(2)"/>
+			<img src="/assets/3.png" onclick="select(3)"/>
+			<img src="/assets/4.png" onclick="select(4)"/>
+			<img src="/assets/chihou.png" onclick='$("#bankkind").click();'/>
+			<a href="#kind_lanche" rel="leanModal_kindlancher" id="bankkind">その他銀行</a>
+			<button class="btn btn-large btn-block btn-primary" type="button" onclick="regist_map();">登録する</button>
+		</td>
+	</tr></tbody></table>
+	<table id="search_form" style="width:100%;display:none;"><tbody><tr>
+		<td style="width:5%;min-width:100px;" valign="top">
+			<div style="background-color:#5bc0de;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_i();">
+			登録機能<br/>切り替え
+			</div>
+		</td>
+		<td style="padding:10px;width:95%;" id="atmlist" valign="top">
+		</td>
+	</tr></tbody></table>
 </div>
 </div>
-
 <div id="kind_lanche" style="border-radius:5px">
   <div class="kind_close" style="width:40px; float:right;">閉じる</div><br clear="both"/>
   <div>
@@ -176,7 +186,9 @@
   	</div>
   </div>
 </div>
-
+<audio id="sound-file" preload="auto">
+	<source src="/assets/change.mp3" type="audio/mp3">
+</audio>
 <script type="text/javascript">
 var before_title ="";
 //キャンパスの要素を取得する
@@ -291,7 +303,6 @@ function codeAddress(address) {
 	});
 
     } else {
-      console.log('Geocode was not successful for the following reason: ' + status);
     }
   });
 }
@@ -331,27 +342,53 @@ function ajaxrequest(data,type,url,successcb,errorcb){
 
 }
 function update_maker(json) {
-var markers = new Array(); 
+var markers = new Array();
+document.getElementById('atmlist').innerHTML = "";
     for(i=0;i<json.length;i++){
+    	var marker = "";
     	if (json[i]['kind'] > 0 && json[i]['kind'] < 10 || json[i]['kind'] == 35 ) {
-			markers[i] = new google.maps.Marker({
+			marker = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
 	   			json[i]['lat'],
 	   			json[i]['lgn']),
 	   			map: map,
 	   			icon: "/assets/"+ json[i]['kind'] +".png"
 	   		});
+	   		markersearch('/assets/' + json[i]['kind'] +'.png', marker, json[i]);
     	} else {
-			markers[i] = new google.maps.Marker({
+			marker = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
 	   			json[i]['lat'],
 	   			json[i]['lgn']),
 	   			map: map,
 	   			icon: "/assets/chihou.png"
-	   		});    		
+	   		});
+	   		markersearch('/assets/chihou.png', marker, json[i]);
     	}
+    	markers[i] = marker;
 	   	onMarkerClick(markers[i], json[i]);
  	}
+//	$('#atmlist').html(aaa);
+}
+function markersearch(markersrc, marker, json) {
+	var div = document.createElement("div");
+		var aaa = document.createElement("img");
+		aaa.src = markersrc;
+		aaa.style.verticalAlign = "top";
+		aaa.style.height = "40px";
+		aaa.style.width = "40px";
+		var b = document.createElement("b");
+		b.innerHTML = json['mapname'];
+		var br = document.createElement("br");
+		var span = document.createElement("span");
+		span.innerHTML = json['memo'];
+	div.appendChild(aaa);
+	div.appendChild(b);
+	div.appendChild(span);
+	document.getElementById('atmlist').appendChild(div);
+	google.maps.event.addDomListener(aaa, "click", function(){
+		google.maps.event.trigger(marker, "click");
+	});
 }
 var myInfoWindow_open = null;
 function onMarkerClick(marker, info){
@@ -449,4 +486,14 @@ $.toast({
 })
 }
 
+function changeform_i(){
+	document.getElementById("input_form").style.display = 'block';
+	document.getElementById("search_form").style.display = 'none';
+	document.getElementById("sound-file").play();
+}
+function changeform_s(){
+	document.getElementById("input_form").style.display = 'none';
+	document.getElementById("search_form").style.display = 'block';
+	document.getElementById("sound-file").play();
+}
 </script>
