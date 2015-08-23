@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def authorize
   	if session[:id]
   	else
-  		redirect_to root_path, notice:"ログインしてください"
+  		redirect_to root_path, notice:"本操作にはユーザ登録、ログインが必要です。実施した上でお願いいたします。"
   	end
   end
 end

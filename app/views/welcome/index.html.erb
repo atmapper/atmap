@@ -4,6 +4,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?&sensor=false"></script>
 	<div id="map-canvas" style="width:60%;min-width: 350px;height:250px;float:left;"></div>
 	<div style="width:35%;min-width:350px;float:left;margin: 0 0 0 10px;">
+		
 		<b>ATMapとはこんなサービスです</b><br/>
 			１.ATMの設置場所をキーワードで探す<br/>
 			２.自身の近くにあるATMを地図上に登録する<br/>
@@ -17,30 +18,23 @@
 	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
 		<h4>新着情報</h4>
 		<b># 2015/08/23（土）　Webサイト全体の通信を暗号化しました</b><br/>
-		メールアドレス、パスワードの入力など個人情報を伴うため、通信を暗号化しました。<br/>
-		メンテ期間：2015/08/15（土） 0:00 〜 4:00
+		メールアドレスなど個人情報を伴うため、通信を暗号化しました。
 
 <br/>
 <br/>
-		<b># 2015/08/14（金）　新機能実装のお知らせ</b><br/>
-		新しい機能をリリースしました。新しい機能をリリースしました。ユーザを登録していただければ、登録した内容を収集して同行の傾向を分析します。マイページの「ATAnalyze」から利用できます。新機能の概要はチュートリアルをご覧ください。これによって、行動パターンや傾向など、ATMapに記録されているデータを集計して、いままで知りえなかった情報を可視化します。
+		<b># 2015/08/30（日）　メンテナンスのお知らせ</b><br/>
+		以下の日程でメンテナスを実施します。<br/>
+		2015/08/30 AM1:00 〜　AM10:00
 <br/>
 <br/>
-過去のお知らせはこちらから
+<a href="http://atmap.hatenadiary.jp/" target="blank">過去のお知らせはこちらから</a>
 
 	</div>
 </div>
 
 <div class="info_buttom_block">
-	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
-	<h4>ユーザの動き</h4>
-	<b>見た</b>：セブンイレブン六郷土手駅前（ユーザ名）<br/>
-	<b>見た</b>：セブンイレブン西麓郷（ゲスト）<br/>
-	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
-	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
-	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
-	<b>ATMap</b>：神奈川新町郵便局（ゲスト）<br/>
-	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	<div id="act_log" style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+
 	</div>
 </div>
 
@@ -91,4 +85,92 @@ $.ajax({
     alert("地図の読み込みに失敗しました。\nしばらくお待ちいただいた後、更新してください。")
   }
 });
+ajaxrequest(null,"get","/play/allinfo",
+	function(j_data){
+		value = "<b>ATM登録履歴（最新から10件表示）</b><br/>";
+		for (m=0;m<j_data["map"].length;m++) {
+			var atmname = j_data["map"][m]["mapname"];
+			if (atmname.length > 10) {
+				atmname = 	j_data["map"][m]["mapname"].slice(0,10) + "...";
+			}
+			value += '<h5>'
+			 + '<img src="/assets/' + j_data["map"][m]["kind"] + '.png" height="20" width="20" />'
+			 + '<a href="' + '/map/' + j_data["map"][m]["id"] + '">' + atmname + '</a>(<span class="timeago" title="'
+			 + j_data["map"][m]["created_at"] + '">投稿時間</span>)</h5>';
+		}
+		value += "<br/><b>クリップ登録履歴（最新から10件表示）</b><br/>";
+		for (c=0;c<j_data["clip"].length;c++) {
+			var str = formtime(j_data["clip"][c]["created_at"]);
+			value += '<h5>' + j_data["clip"][c]["mapname"] + '(<span class="timeago" title="' + j_data["clip"][c]["created_at"] + '">投稿時間</span>)</h5>';
+		}
+		value += "<br/><b>コメント登録履歴（最新から10件表示）</b><br/>";
+		for (b=0;b<j_data["comment"].length;b++) {
+			comm = j_data["comment"][b]["value"];
+			if (comm.length > 10) {
+				comm = 	j_data["comment"][b]["value"].slice(0,10) + "...";
+			}
+			value += '<h5>'
+			 + '<a href="' + '/map/' + j_data["comment"][b]["mapid"] + '">' + comm + '</a>(<span class="timeago" title="' + j_data["comment"][b]["created_at"] 
+			 + '"></span>)</h5>';
+		}
+		$("#act_log").html(value);
+		formatchange();
+	},
+	function(j_data){
+	}
+);
+function ajaxrequest(data,type,url,successcb,errorcb){
+    $.ajax({
+      type: type,
+      url: url,
+      headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+      contentType: 'application/json',
+      dataType: 'json',
+      data:data,
+      success: function(j_data){
+        successcb(j_data);
+      },
+      error: function(j_data){
+          errorcb(j_data);
+      }
+    });
+}
+// Japanese setting for Timeago
+$.timeago.settings.strings = {
+    prefixAgo: "",
+    prefixFromNow: "今から",
+    suffixAgo: "",
+    suffixFromNow: "後",
+    seconds: "1 分未満",
+    minute: "1分前",
+    minutes: "%d分前",
+    hour: "1時間前",
+    hours: "%d時間前",
+    day: "1日前",
+    days: "%d日前",
+    month: "1月前",
+    months: "%d月前",
+    year: "1年前",
+    years: "%d年前",
+    wordSeparator: ""
+};
+function formatchange() {
+$('span.timeago').timeago();
+};
+function formtime (tt) {
+	var date = new Date(tt);
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var hh = date.getHours();
+	var mm = date.getMinutes();
+	var ss = date.getSeconds();
+	if ( month < 10 ) {
+	　　month = '0' + month;
+	}
+	if ( day < 10 ) {
+	　　day = '0' + day;
+	}
+	return year + '/' + month + '/' + day + " " + hh + ':' + mm + ':' + ss;
+}
 </script>

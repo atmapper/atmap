@@ -3,7 +3,16 @@ class MapController < ApplicationController
 	def index
     @keyword = params[:keyword];
 	end
-  def drag
+  def view
+    map = Map.find_by_id(params[:id])
+    @mapname = map.mapname
+    @lat = map.lat
+    @lgn = map.lgn
+    @kind = map.kind
+    @id = params[:id]
+    @create = map.created_at
+    logger.debug "ログ出します"
+    logger.debug @create
   end
 	def create
 		t = Map.new();
@@ -36,7 +45,6 @@ class MapController < ApplicationController
       and lgn < ?",
        params[:swlat], params[:swlng], params[:nelat], params[:nelng]]
       )
-    logger.debug(t);
     render json: t,status: :ok
 	end
   def clip

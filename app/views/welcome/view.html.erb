@@ -1,0 +1,94 @@
+<div class="top_map_middle">
+
+<div id="top_map_buttom">
+	<script src="https://maps.googleapis.com/maps/api/js?&sensor=false"></script>
+	<div id="map-canvas" style="width:60%;min-width: 350px;height:250px;float:left;"></div>
+	<div style="width:35%;min-width:350px;float:left;margin: 0 0 0 10px;">
+		<b>ATMapとはこんなサービスです</b><br/>
+			１.ATMの設置場所をキーワードで探す<br/>
+			２.自身の近くにあるATMを地図上に登録する<br/>
+			３.日本全国に設置されているさまざまな銀行のATMを見る<br/><br/>
+			ユーザを登録しなくても、ATMを登録可能です。登録すると登録したATMを一覧表示できるなど、より便利に利用することができます。
+	</div>
+</div>
+<br clear="both"/>
+<br/>
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+		<h4>新着情報</h4>
+		<b># 2015/08/23（土）　Webサイト全体の通信を暗号化しました</b><br/>
+		メールアドレス、パスワードの入力など個人情報を伴うため、通信を暗号化しました。<br/>
+		メンテ期間：2015/08/15（土） 0:00 〜 4:00
+
+<br/>
+<br/>
+		<b># 2015/08/14（金）　新機能実装のお知らせ</b><br/>
+		新しい機能をリリースしました。新しい機能をリリースしました。ユーザを登録していただければ、登録した内容を収集して同行の傾向を分析します。マイページの「ATAnalyze」から利用できます。新機能の概要はチュートリアルをご覧ください。これによって、行動パターンや傾向など、ATMapに記録されているデータを集計して、いままで知りえなかった情報を可視化します。
+<br/>
+<br/>
+過去のお知らせはこちらから
+
+	</div>
+</div>
+
+<div class="info_buttom_block">
+	<div style="margin:0 0 10px 0;padding:10px;border:1px solid lightgray;border-radius: 5px;-webkit-border-radius: 5px;-moz-border-radius: 5px;">
+	<h4>ユーザの動き</h4>
+	<b>見た</b>：セブンイレブン六郷土手駅前（ユーザ名）<br/>
+	<b>見た</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>コメント</b>：セブンイレブン西麓郷（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	<b>ATMap</b>：神奈川新町郵便局（ゲスト）<br/>
+	<b>ATMap</b>：セブンイレブン蒲田（ゲスト）<br/>
+	</div>
+</div>
+
+</div>
+<br clear="both" />
+
+<footer style="padding:10px;">
+ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運営団体</a>　<a href="/info.html" title="利用規約とプライバシー" target="blank">利用規約とプライバシー</a>　</footer>
+<script type="text/javascript">
+function loadmap(lat,lgn,marker_name) {
+var before_title ="";
+//キャンパスの要素を取得する
+var canvas = document.getElementById( "map-canvas" );
+var crossSize = 19;
+//中心の位置座標を指定する
+var latlng = new google.maps.LatLng( lat , lgn );
+var map;
+
+//地図のオプションを設定する
+var mapOptions = {
+	zoom: 4 ,
+	center: latlng,
+	scrollwheel: false,
+	mapTypeControlOptions: { mapTypeIds: ['sample', google.maps.MapTypeId.ROADMAP] }
+};
+	map = new google.maps.Map( canvas , mapOptions );
+	markers = new google.maps.Marker({
+	position: new google.maps.LatLng(
+		lat,
+		lgn),
+		map: map,
+		icon: marker_name
+	});
+}
+// マーカー情報取得
+$.ajax({
+  type: 'get',
+  url: '/welcome/data',
+  headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+  contentType: 'application/json',
+  dataType: 'json',
+  data:null,
+  success: function(json){
+  	    for(i=0;i<json.length;i++){
+  	    	loadmap(json[i]['lat'], json[i]['lgn'], "/assets/"+ json[i]['kind'] +".png");
+	 	}
+  },error: function(json){
+    alert("地図の読み込みに失敗しました。\nしばらくお待ちいただいた後、更新してください。")
+  }
+});
+</script>

@@ -1,11 +1,4 @@
 <div id="top_map_middle">
-<script>
-var button = document.getElementById("button");
-button.onclick = function() {
-  var address = document.getElementById("keyword").value;
-  codeAddress(address);
-}
-</script>
 
 <div class="top_map_buttom_block">
 <script src="https://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
@@ -377,8 +370,8 @@ function onMarkerClick(marker, info){
 		    	+ '<b>' + info["mapname"] + '</b><br/>'
 		    	+ info['memo']
 		    	+ '<br clear="both" /><br/><br/>'
-		    	+ '<img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')"; >　　'
-		    	+ '<img src="/assets/comment.png" height="36" width="36" onclick=alert("test"); >　　'
+		    	+ '<img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')"; >'
+		    	+ '<img src="/assets/comment.png" height="36" width="36" onclick="map_set(' + info['id'] + ')";  >'
 		    	+ '<img src="/assets/clip.png" height="36" width="36" onclick=clip_set(' + info['id'] + '); >'
 		    	+ '</div>'
 	  		});
@@ -412,6 +405,9 @@ function clip_set(mapid) {
 		alert("sorry, this system is busy. Please try again later.")			
 		}
 	});
+}
+function map_set(mapid) {
+	location.href = "/map/" + mapid;
 }
 function regist_map() {
 	var data = $.toJSON({
