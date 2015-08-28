@@ -22,7 +22,7 @@ Rails.application.configure do
     port:                  587,
     domain:                'atmap.top',
     user_name:             'atmapper@gmail.com',
-    password:              '',
+    password:              'irgslwsdfxiymksf',
     authentication:        'plain',
     enable_starttls_auto:  true
   }

@@ -15,10 +15,14 @@ class UsersController < ApplicationController
     user.deleteflg = "0"
     user.auth = ((0..9).to_a + ("a".."z").to_a + ("A".."Z").to_a).sample(20).join
     user.auth += Time.now.strftime("%y%M%j%m%d").to_s
+    logger.debug "before save"
+    logger.debug user
     if user.save
+        logger.debug "after save"
          PostMailer.post_email(user).deliver
         render json: '{}'
     else
+        logger.debug user.errors.full_messages
         render json: '{}', status: 400
     end
   end

@@ -1,10 +1,22 @@
 FactoryGirl.define do
   factory :user do
     name "テストユーザ１"
-    password_digest "password"
+    password "password"
     email "kai.kusakari@gmail.com"
     auth "12345678900987654321"
     startflg 1
+    deleteflg 1
+    pref 49
+    created_at "2015-01-01 01:01:01"
+    updated_at "2015-01-01 01:01:02"
+    mm 1
+  end
+  factory :usertest, :class => User do
+    name "認証テストユーザ１"
+    password "password"
+    email "atmapper@gmail.com"
+    auth "12345678900987654321"
+    startflg 0
     deleteflg 1
     pref 49
     created_at "2015-01-01 01:01:01"
