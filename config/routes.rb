@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get   "map/drag"          => "map#drag"
   post  "map/clip"          => "map#clip"
   get   "map/"              => "map#index"
-  post  "map/"              => "map#index"
+  get   "map/keysearch"     => "map#keysearch"
+  get   "map/locsearch"     => "map#locsearch"
   get   "map/(:id)"         => "map#view"
 
   post  "users/create"      => "users#create"

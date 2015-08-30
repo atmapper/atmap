@@ -1,8 +1,14 @@
 class MapController < ApplicationController
   skip_before_filter :authorize
-	def index
-    @keyword = params[:keyword];
+	def keysearch
+    @keyword = params[:key];
+    render :action => 'index'
 	end
+  def locsearch
+    @input_lat = params[:lat];
+    @input_lgn = params[:lgn];
+    render :action => 'index'
+  end
   def view
     map = Map.find_by_id(params[:id])
     @mapname = map.mapname
@@ -44,7 +50,7 @@ class MapController < ApplicationController
       and lat < ?
       and lgn < ?",
        params[:swlat], params[:swlng], params[:nelat], params[:nelng]]
-      )
+      ).limit(10)
     render json: t,status: :ok
 	end
   def clip
