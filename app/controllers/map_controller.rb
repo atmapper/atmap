@@ -1,7 +1,7 @@
 class MapController < ApplicationController
   skip_before_filter :authorize
 	def keysearch
-    @keyword = params[:key];
+    @keyword = params[:keyword];
     render :action => 'index'
 	end
   def locsearch

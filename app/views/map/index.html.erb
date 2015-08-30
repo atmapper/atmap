@@ -5,7 +5,7 @@
 <div id="map-canvas" style="width:100%;min-height:300px;height:40%;"></div>
 </div>
 <div class="top_map_buttom_block">
-	<table id="input_form" style="width:100%"><tbody><tr>
+	<table id="input_form" style="width:100%;display:none;"><tbody><tr>
 		<td style="width:5%;min-width:100px;" valign="top">
 			<div style="background-color:#5cb85c;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_s();">
 			検索機能<br/>切り替え
@@ -13,6 +13,9 @@
 		</td>
 		<td style="padding:10px;width:95%;" valign="top">
 			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+		  	<input type="hidden" name="self_lat" id="self_lat" value=""/>
+		  	<input type="hidden" name="self_lgn" id="self_lgn" value=""/>
+
 		  	<input type="hidden" name="lat" id="lat" value=""/>
 		  	<input type="hidden" name="lgn" id="lgn" value=""/>
 			<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名：最大100文字" />
@@ -31,7 +34,7 @@
 			</tr></tbody></table>
 		</td>
 	</tr></tbody></table>
-	<table id="search_form" style="width:100%;display:none;"><tbody><tr>
+	<table id="search_form" style="width:100%;"><tbody><tr>
 		<td style="width:5%;min-width:100px;" valign="top">
 			<div style="background-color:#5bc0de;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_i();">
 			登録機能<br/>切り替え
@@ -264,12 +267,22 @@
 var before_title ="";
 //キャンパスの要素を取得する
 var canvas = document.getElementById( "map-canvas" );
-var markersArray = [];
+var markers = new Array();
 var crossSize = 19;
 //中心の位置座標を指定する
 var map;
 var tmpmarker;
-
+var selfmarker;
+var rendererOptions = {
+	draggable: true,
+	preserveViewport:false
+};
+var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+directionsDisplay.setOptions( {
+	suppressMarkers: true
+});
+var directionsService = new google.maps.DirectionsService();
+var myInfoWindow;
 // //地図のオプションを設定する
 // var mapOptions = {
 // 	zoom: 15 ,				//ズーム値
@@ -376,7 +389,31 @@ function codeAddress_log(lat, lgn) {
   map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   geocoder.geocode({latLng: myLatlng}, function(results, status) {
 
-    // success
+  	// self location map
+  	if (selfmarker != null ) {
+		selfmarker.setMap(null);
+	}
+
+	selfmarker = new google.maps.Marker({
+		position: new google.maps.LatLng(
+			lat,
+			lgn
+		),
+		animation: google.maps.Animation.DROP,
+		draggable: true,
+		map: map,
+		icon: "/assets/self.png"
+	});
+	var latlng = map.getCenter();
+	$("#self_lat").val(lat);
+	$("#self_lgn").val(lgn);
+
+	// self marker drag event
+	google.maps.event.addListener( selfmarker, 'dragend', function(ev){
+		$("#self_lat").val(ev.latLng.lat());
+		$("#self_lgn").val(ev.latLng.lng());
+	});
+
     if (status == google.maps.GeocoderStatus.OK) {
 	    map.setCenter(results[0].geometry.location);
 		createCenterMaker();
@@ -423,10 +460,9 @@ function ajaxrequest(data,type,url,successcb,errorcb){
 
 }
 function update_maker(json) {
-var markers = new Array();
 document.getElementById('atmlist').innerHTML = "";
     for(i=0;i<json.length;i++){
-    	var marker = "";
+    	marker = "";
     	if (json[i]['kind'] > 0 && json[i]['kind'] < 51 ) {
 			marker = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
@@ -463,9 +499,16 @@ function markersearch(markersrc, marker, json) {
 		var br = document.createElement("br");
 		var span = document.createElement("span");
 		span.innerHTML = json['memo'];
+		var aaaaa = document.createElement("a");
+		aaaaa.href = 'javascript:void(0);';
+		aaaaa.onclick = function() {
+			route_set(json['lat'],json['lgn']);
+		}
+		aaaaa.innerHTML = 'ルート案内（試験機能）';
 	div.appendChild(aaa);
 	div.appendChild(b);
 	div.appendChild(span);
+	div.appendChild(aaaaa);
 	document.getElementById('atmlist').appendChild(div);
 	google.maps.event.addDomListener(aaa, "click", function(){
 		google.maps.event.trigger(marker, "click");
@@ -480,7 +523,7 @@ function onMarkerClick(marker, info){
     		if(myInfoWindow_open) {
     			myInfoWindow_open.close();
     		}
-	    	var myInfoWindow = new google.maps.InfoWindow({
+	    	myInfoWindow = new google.maps.InfoWindow({
 		    	content: '<div style="width:300px;">'
 		    	+ '<b>' + info["mapname"] + '</b><br/>'
 		    	+ info['memo']
@@ -499,13 +542,25 @@ function onMarkerClick(marker, info){
     );
 }
 function route_set(lat, lgn) {
-	new google.maps.DirectionsService().route({
-        origin: "皇居", 
+	if($("#self_lat").val() == '' || $("#self_lgn").val() == ''){
+		alert("画面上部の「ATMを探す」ボタンを押下するか、現在地ピンを地図に刺してください");
+	}
+	var From = new google.maps.LatLng($("#self_lat").val(), $("#self_lgn").val());
+	directionsService.route({
+        origin: From, 
         destination: new google.maps.LatLng(lat,lgn),
         travelMode: google.maps.DirectionsTravelMode.WALKING
     },function(result, status){
+
     	if (status == google.maps.DirectionsStatus.OK) {
-      		new google.maps.DirectionsRenderer({map: map}).setDirections(result);
+    		directionsDisplay.setMap(map);
+      		directionsDisplay.setDirections(result);
+      		
+      		// editing marker del
+      		if (tmpmarker != null ) {
+				tmpmarker.setMap(null);
+			}
+			myInfoWindow.open(null, null);
     	}
     });
 }
