@@ -17,7 +17,6 @@
 		  	<input type="hidden" name="lgn" id="lgn" value=""/>
 			<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名：最大100文字" />
 			<input type="text" name="memo" id="memo" class="form-control" placeholder="メモ（任意）：最大255文字" />
-			銀行種類
 			<input type="hidden" name="kind" id="kind" value="0" />
 			<img src="/assets/1.png" onclick="select(1)"/>
 			<img src="/assets/2.png" onclick="select(2)"/>
@@ -197,6 +196,7 @@ var markersArray = [];
 var crossSize = 19;
 //中心の位置座標を指定する
 var map;
+var tmpmarker;
 
 // //地図のオプションを設定する
 // var mapOptions = {
@@ -279,26 +279,9 @@ function codeAddress(address) {
     // ジオコーディングが成功した場合
     if (status == google.maps.GeocoderStatus.OK) {
     map.setCenter(results[0].geometry.location);
-	var latlng = map.getCenter();
-	var lat = latlng.lat();
-	var lng = latlng.lng();
-	$("#lat").val(lat);
-	$("#lgn").val(lng);
 	createCenterMaker();
 
-	google.maps.event.addListener(map, 'dragend', function() {
-		var latlng = map.getCenter();
-		var lat = latlng.lat();
-		var lng = latlng.lng();
-		$("#lat").val(lat);
-		$("#lgn").val(lng);
-	});
 	google.maps.event.addListener(map, 'idle', function() {
-		var latlng = map.getCenter();
-		var lat = latlng.lat();
-		var lng = latlng.lng();
-		$("#lat").val(lat);
-		$("#lgn").val(lng);
 		dispLatLng();
 	});
 
@@ -346,7 +329,7 @@ var markers = new Array();
 document.getElementById('atmlist').innerHTML = "";
     for(i=0;i<json.length;i++){
     	var marker = "";
-    	if (json[i]['kind'] > 0 && json[i]['kind'] < 10 || json[i]['kind'] == 35 ) {
+    	if (json[i]['kind'] > 0 && json[i]['kind'] < 51 ) {
 			marker = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
 	   			json[i]['lat'],
@@ -448,6 +431,11 @@ function map_set(mapid) {
 	location.href = "/map/" + mapid;
 }
 function regist_map() {
+	if (document.getElementById("lat").value == ''
+		|| document.getElementById("lgn").value == '') {
+		alert("下部のアイコンをタップしてピンを指してください。");
+	}
+
 	var data = $.toJSON({
 		lat : document.getElementById("lat").value,
 		lgn : document.getElementById("lgn").value,
@@ -460,6 +448,9 @@ function regist_map() {
 		dispLatLng();
 		document.getElementById("memo").value　= '';
 		document.getElementById("mapname").value　= '';
+		if (tmpmarker != null ) {
+			tmpmarker.setMap(null);
+		}
 	},
 	function(j_data){
 		alert("sorry, this system is busy. Please try again later.")
@@ -467,8 +458,46 @@ function regist_map() {
 }
 function select(kind_no) {
 	document.getElementById("kind").value = kind_no;
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	if (tmpmarker != null ) {
+		tmpmarker.setMap(null);
+	}
+	if (kind_no > 0 && kind_no< 51 ) {
+		tmpmarker = new google.maps.Marker({
+			position: new google.maps.LatLng(
+				lat,
+				lng
+			),
+			animation: google.maps.Animation.DROP,
+			draggable: true,
+			map: map,
+			icon: "/assets/" + kind_no +".png"
+		});
+	} else {
+		tmpmarker = new google.maps.Marker({
+			position: new google.maps.LatLng(
+				lat,
+				lng
+			),
+			animation: google.maps.Animation.DROP,
+			draggable: true,
+			map: map,
+			icon: "/assets/chihou.png"
+		});		
+	}
+	var latlng = map.getCenter();
+	var lat = latlng.lat();
+	var lng = latlng.lng();
+	$("#lat").val(lat);
+	$("#lgn").val(lng);
+	google.maps.event.addListener( tmpmarker, 'dragend', function(ev){
+		$("#lat").val(ev.latLng.lat());
+		$("#lgn").val(ev.latLng.lng());
+		console.log($("#lat").val(),$("#lgn").val());
+	});
 	$(".kind_close").click();
-
 }
 function endtoast() {
 $.toast({ 

@@ -23,10 +23,15 @@ ATMapとは？　<a href="/group.html" title="運営団体" target="blank">運�
 
 ajaxrequest(null,"get","/play/info",
 	function(j_data){
+		console.log(j_data);
 		value = "<b>マップ登録履歴（最新から10件表示）</b><br/>";
-		for (m=0;m<j_data["map"][0].length;m++) {
-			var str = formtime(j_data["map"][0][m]["created_at"]);
-			value += '<h5>' + j_data["map"][0][m]["mapname"] + 'を登録しました</h5>';
+		if (j_data["map"][0] != '{}') {
+			for (m=0;m<j_data["map"][0].length;m++) {
+				var str = formtime(j_data["map"][0][m]["created_at"]);
+				value += '<h5>' + j_data["map"][0][m]["mapname"] + 'を登録しました</h5>';
+			}
+		} else {
+				value += '<h5>まだマップ登録はありません。</h5>';			
 		}
 		value += "<b>クリップ登録履歴（最新から10件表示）</b><br/>";
 		for (c=0;c<j_data["clip"][0].length;c++) {

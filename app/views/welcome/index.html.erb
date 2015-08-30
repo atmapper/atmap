@@ -100,7 +100,7 @@ ajaxrequest(null,"get","/play/allinfo",
 			if (atmname.length > 10) {
 				atmname = 	j_data["map"][m]["mapname"].slice(0,10) + "...";
 			}
-			if (j_data["map"][m]["kind"] > 0 && j_data["map"][m]["kind"] < 10 || j_data["map"][m]["kind"] == 35 ) {
+			if (j_data["map"][m]["kind"] > 0 && j_data["map"][m]["kind"] < 51 ) {
 				value += '<h5>'
 				 + '<img src="/assets/' + j_data["map"][m]["kind"] + '.png" height="20" width="20" />'
 				 + '<a href="' + '/map/' + j_data["map"][m]["id"] + '">' + atmname + '</a>(<span class="timeago" title="'
