@@ -17,8 +17,6 @@ class MapController < ApplicationController
     @kind = map.kind
     @id = params[:id]
     @create = map.created_at
-    logger.debug "ログ出します"
-    logger.debug @create
   end
 	def create
 		t = Map.new();
@@ -44,15 +42,24 @@ class MapController < ApplicationController
     	end
 	end
 	def list
-    t = Map.where(["
-      lat > ?
-      and lgn > ? 
-      and lat < ?
-      and lgn < ?",
+    select_column = 'id,mapname,body,lat,lgn,kind,created_at,updated_at,regist_user,memo, abs (' + params[:cenlat] + '- lat) + abs ('+ params[:cenlgn] +' - lgn) as dist'
+    t = Map.select(select_column).where(["lat > ? and lgn > ? and lat < ? and lgn < ?",
        params[:swlat], params[:swlng], params[:nelat], params[:nelng]]
-      ).limit(10)
+      ).limit(10).order('dist')
     render json: t,status: :ok
 	end
+  def one
+      if Map.find_by_id(params[:id]).blank?
+        render text: '0', status: 404 and return
+      end
+      clip = Clip.where(["mapid = ?", params[:id]]).count
+      if clip != 0 then
+        render text: clip, status: :ok
+      else
+        render text: '0', status: :ok
+      end
+  end
+
   def clip
       if Map.find_by_id(params[:id]).blank?
         render json: '{}', status: 404 and return

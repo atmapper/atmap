@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get   "map/list"          => "map#list"
   get   "map/drag"          => "map#drag"
   post  "map/clip"          => "map#clip"
+  get   "map/clipcnt/(:id)" => "map#one"
   get   "map/"              => "map#index"
   get   "map/keysearch"     => "map#keysearch"
   get   "map/locsearch"     => "map#locsearch"
@@ -26,4 +27,10 @@ Rails.application.routes.draw do
   get   "comment/(:id)"     => "comment#comlist"
   post  "comment/create"    => "comment#create"
 
+  get   "use/index"         => "use#index"
+  get   "use/(:id)"         => "use#one"
+  post  "use/create"        => "use#create"
+
+  get   "search/index"      => "search#index"
+  get   "search/(:id)"      => "search#one"
 end

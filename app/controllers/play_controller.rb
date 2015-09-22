@@ -28,7 +28,7 @@ class PlayController < ApplicationController
       clip = '{}'
     end
 
-    comment  = Comment.order("created_at DESC").limit(10)
+    comment  = Comment.order("created_at DESC").limit(5)
     if comment.blank?
       comment = '{}'
     end

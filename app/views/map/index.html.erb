@@ -1,49 +1,69 @@
-<div id="top_map_middle">
-<div class="top_map_buttom_block">
-
-<script src="https://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
-<div id="map-canvas" style="width:100%;min-height:300px;height:40%;"></div>
-</div>
-<div class="top_map_buttom_block">
-	<table id="input_form" style="width:100%;display:none;"><tbody><tr>
-		<td style="width:5%;min-width:100px;" valign="top">
-			<div style="background-color:#5cb85c;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_s();">
-			検索機能<br/>切り替え
-			</div>
-		</td>
-		<td style="padding:10px;width:95%;" valign="top">
-			<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-		  	<input type="hidden" name="self_lat" id="self_lat" value=""/>
-		  	<input type="hidden" name="self_lgn" id="self_lgn" value=""/>
-
-		  	<input type="hidden" name="lat" id="lat" value=""/>
-		  	<input type="hidden" name="lgn" id="lgn" value=""/>
-			<input type="text" name="mapname" id="mapname" class="form-control" placeholder="ATM名：最大100文字" />
-			<input type="text" name="memo" id="memo" class="form-control" placeholder="メモ（任意）：最大255文字" />
-			<input type="hidden" name="kind" id="kind" value="0" />
-			<table style="margin: 5px 0 0 5px;"><tbody><tr>
-				<td align="center">
-					QR<br/>
-					<img src="/assets/1.png" onclick="select(1)"/>
-				</td><td>
-					<button class="btn btn-lg btn-block btn-default" type="button" onclick="$('#bankkind').click();">銀行</button>
-					<a href="#kind_lanche" rel="leanModal_kindlancher" id="bankkind" style="display:none;">リンク</a>
-				</td><td>
-					<button class="btn btn-lg btn-block btn-primary" type="button" onclick="regist_map();">登録</button>
+<div class="top_map_buttom_block" style="padding:50px 0 0 0;">
+	<script src="https://maps.googleapis.com/maps/api/js?&sensor=false&libraries=places"></script>
+	<div id="map-canvas" style="width:100%;height:100%;">
+	</div>
+	<div id="map_detail" style="width:100%;height:100%;display:none;">
+		<input type="hidden" id="mapid" value="" />
+		<div style="margin:60px 0 0 0;padding:0 5px 5px 5px;">
+			<h2 id="atm_title">タイトル</h2>
+			<table style="width:100%"><tbody>
+				<tr>
+					<td style="text-align:center;width:33%;">
+						<img src="/assets/up.png" width="30" heigth="30"/><br/>
+						使った
+					</td>
+					<td style="text-align:center;width:33%;">
+						<img src="/assets/clip.png" width="30" heigth="30" /><br/>
+						クリップ
+					</td>
+					<td style="text-align:center;width:33%;">
+						<img src="/assets/sa.png" width="30" heigth="30" /><br/>
+						検索
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:center;">
+						<span id="use_count"></span>
+					</td>
+					<td style="text-align:center;">
+						<span id="clip_count"></span>
+					</td>
+					<td style="text-align:center;">
+						<span id="search_count"></span>
+					</td>
+				</tr>
+			</tbody></table>
+			<br/><br/>
+			<table><tbody><tr>
+				<td style="text-align:center;">
+					<img src="/assets/up.png" width="30" heigth="30" onclick="use_add()"/><br/>
+					使った
+				</td>
+				<td style="text-align:center;">
+					<img src="/assets/clip.png" width="30" heigth="30" /><br/>
+					クリップ
 				</td>
 			</tr></tbody></table>
-		</td>
-	</tr></tbody></table>
-	<table id="search_form" style="width:100%;"><tbody><tr>
-		<td style="width:5%;min-width:100px;" valign="top">
-			<div style="background-color:#5bc0de;border-radius:5px;float:left;width:100px;height:200px;color:#FFF;padding:90px 0;text-align:center;" onclick="changeform_i();">
-			登録機能<br/>切り替え
-			</div>
-		</td>
-		<td style="padding:10px;width:95%;" id="atmlist" valign="top">
-		</td>
-	</tr></tbody></table>
+			ユーザから参照された回数：<br/>
+			週次ヒートマップ<br/><br/>
+			<b>メモ</b><br>
+			<p id="atm_memo">メモ読み込み中・・・</p><br/>
+			<b>コメント</b><br>
+			<p id="atm_comm">コメント読み込み中・・・</p>
+			<button type="button" class="btn btn-primary" onclick="view_detail('','','','','');">閉じる</button>
+		</div>
+	</div>
 </div>
+<div id="map_footer">
+	<b>ATMを登録する</b><br/>
+	<input type="hidden" name="kind" id="kind" value="0" />
+	<input type="hidden" name="lat" id="lat" value=""/>
+  	<input type="hidden" name="lgn" id="lgn" value=""/>
+		<table><tbody><tr>
+			<td><button  type="button" class="btn btn-primary" onclick="$('#bankkind').click();">①配置</button></td>
+			<td style="padding:0 0 0 10px;"><button  type="button" class="btn btn-success" onclick="regist_map();">②登録</button></td>
+		</tr></tbody></table>
+		<a href="#kind_lanche" rel="leanModal_kindlancher" id="bankkind" style="display:none;">リンク</a>
 </div>
 <div id="kind_lanche" style="border-radius:5px">
   <div class="kind_close" style="width:40px; float:right;">閉じる</div><br clear="both"/>
@@ -264,6 +284,7 @@
 </audio>
 
 <script type="text/javascript">
+$('#layout_head').css({position: "absolute",  top: "0", left: "0", zIndex: "1"});
 var before_title ="";
 //キャンパスの要素を取得する
 var canvas = document.getElementById( "map-canvas" );
@@ -368,7 +389,9 @@ function codeAddress(address) {
 	    map.setCenter(results[0].geometry.location);
 		createCenterMaker();
 
-		google.maps.event.addListener(map, 'idle', function() {
+		dispLatLng();
+
+		google.maps.event.addListener(map, 'dragend', function() {
 			dispLatLng();
 		});
 
@@ -404,7 +427,6 @@ function codeAddress_log(lat, lgn) {
 		map: map,
 		icon: "/assets/self.png"
 	});
-	var latlng = map.getCenter();
 	$("#self_lat").val(lat);
 	$("#self_lgn").val(lgn);
 
@@ -417,7 +439,9 @@ function codeAddress_log(lat, lgn) {
     if (status == google.maps.GeocoderStatus.OK) {
 	    map.setCenter(results[0].geometry.location);
 		createCenterMaker();
-		google.maps.event.addListener(map, 'idle', function() {
+		dispLatLng();
+
+		google.maps.event.addListener(map, 'dragend', function() {
 			dispLatLng();
 		});
     } else {
@@ -433,7 +457,11 @@ var swlng = swLatlng.lng();
 var neLatlng = latlngBounds.getNorthEast();
 var nelat = neLatlng.lat();
 var nelng = neLatlng.lng();
-ajaxrequest(null, "get", '/map/list?swlat=' + swlat + '&swlng=' + swlng + '&nelat=' + nelat + '&nelng=' + nelng,
+
+var latlng = map.getCenter();
+var cenlat = latlng.lat();
+var cenlgn = latlng.lng();
+ajaxrequest(null, "get", '/map/list?swlat=' + swlat + '&swlng=' + swlng + '&nelat=' + nelat + '&nelng=' + nelng + '&cenlat=' + cenlat + '&cenlgn=' + cenlgn ,
 	function(j_data){
 		update_maker(j_data);
 	},
@@ -441,7 +469,22 @@ ajaxrequest(null, "get", '/map/list?swlat=' + swlat + '&swlng=' + swlng + '&nela
 		alert("aasorry, this system is busy. Please try again later.")
 	});
 }
-
+function ajaxtesxtrequest(data,type,url,successcb,errorcb){
+    $.ajax({
+      type: type,
+      url: url,
+      headers:{'X-CSRF-Token': $('#authenticity_token').val()},
+      contentType: 'text/plain',
+      dataType: 'json',
+      data:data,
+      success: function(j_data){
+        successcb(j_data);
+      },
+      error: function(j_data){
+          errorcb(j_data);
+      }
+    });
+}
 function ajaxrequest(data,type,url,successcb,errorcb){
     $.ajax({
       type: type,
@@ -457,10 +500,8 @@ function ajaxrequest(data,type,url,successcb,errorcb){
           errorcb(j_data);
       }
     });
-
 }
 function update_maker(json) {
-document.getElementById('atmlist').innerHTML = "";
     for(i=0;i<json.length;i++){
     	marker = "";
     	if (json[i]['kind'] > 0 && json[i]['kind'] < 51 ) {
@@ -471,7 +512,6 @@ document.getElementById('atmlist').innerHTML = "";
 	   			map: map,
 	   			icon: "/assets/"+ json[i]['kind'] +".png"
 	   		});
-	   		markersearch('/assets/' + json[i]['kind'] +'.png', marker, json[i]);
     	} else {
 			marker = new google.maps.Marker({
 	   		position: new google.maps.LatLng(
@@ -480,39 +520,11 @@ document.getElementById('atmlist').innerHTML = "";
 	   			map: map,
 	   			icon: "/assets/chihou.png"
 	   		});
-	   		markersearch('/assets/chihou.png', marker, json[i]);
     	}
     	markers[i] = marker;
 	   	onMarkerClick(markers[i], json[i]);
  	}
 //	$('#atmlist').html(aaa);
-}
-function markersearch(markersrc, marker, json) {
-	var div = document.createElement("div");
-		var aaa = document.createElement("img");
-		aaa.src = markersrc;
-		aaa.style.verticalAlign = "top";
-		aaa.style.height = "40px";
-		aaa.style.width = "40px";
-		var b = document.createElement("b");
-		b.innerHTML = json['mapname'];
-		var br = document.createElement("br");
-		var span = document.createElement("span");
-		span.innerHTML = json['memo'];
-		var aaaaa = document.createElement("a");
-		aaaaa.href = 'javascript:void(0);';
-		aaaaa.onclick = function() {
-			route_set(json['lat'],json['lgn']);
-		}
-		aaaaa.innerHTML = 'ルート案内（試験機能）';
-	div.appendChild(aaa);
-	div.appendChild(b);
-	div.appendChild(span);
-	div.appendChild(aaaaa);
-	document.getElementById('atmlist').appendChild(div);
-	google.maps.event.addDomListener(aaa, "click", function(){
-		google.maps.event.trigger(marker, "click");
-	});
 }
 var myInfoWindow_open = null;
 function onMarkerClick(marker, info){
@@ -520,26 +532,84 @@ function onMarkerClick(marker, info){
         marker
     ,   'click'
     ,   function(event){
-    		if(myInfoWindow_open) {
-    			myInfoWindow_open.close();
-    		}
-	    	myInfoWindow = new google.maps.InfoWindow({
-		    	content: '<div style="width:300px;">'
-		    	+ '<b>' + info["mapname"] + '</b><br/>'
-		    	+ info['memo']
-		    	+ '<br clear="both" /><br/><br/>'
-		    	+ '<table><tbody><tr>'
-		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/sign-post.png" height="36" width="36" onclick="route_set(' + info['lat'] + ',' + info['lgn'] + ')";><br/>ルート案内</td>'
-		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/comment.png" height="36" width="36" onclick="map_set(' + info['id'] + ')";><br/>コメント</td>'
-		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/clip.png" height="36" width="36" onclick=clip_set(' + info['id'] + ');><br/>クリップ</td>'
-		    	+ '<td align="center" style="padding:5px;" onmouseover="this.style.backgroundColor = \'SkyBlue\';" onmouseout="this.style.backgroundColor = \'#FFF\';"><img src="/assets/tv.png" height="36" width="36" onclick="window.open(\'/myself.html\');"><br/>機能説明</td>'
-		    	+ '</tr></tbody></table>'
-		    	+ '</div>'
-	  		});
-	  		myInfoWindow.open(map, marker);
-	  		myInfoWindow_open = myInfoWindow;
+    	console.log(info);
+    		view_detail(info["mapname"],info['memo'],info['lat'],info['lgn'] ,info['id']);
         }
     );
+}
+function view_detail(name,memo,lat,lgn,id) {
+	document.getElementById("mapid").value = id;
+	if (document.getElementById("map_detail").style.display == 'none') {
+		document.getElementById("atm_title").innerHTML = name;
+		if (memo != "") {
+			document.getElementById("atm_memo").innerHTML = memo;
+		}
+		document.getElementById("atm_memo").innerHTML = 'メモはありません';
+		document.getElementById("map_detail").style.display = 'block';
+		document.getElementById("atm_comm").innerHTML = 'コメント読み込み中・・・';
+		ajaxrequest(null, "get", '/comment/' + id,
+		function(j_data){
+			if (j_data.length > 0) {
+			  	var value = "";
+				for (i=0;i<j_data.length;i++) {
+		  	    	var user = "";
+		  	    	if(j_data[i]["name"] == null ) {
+			  	    	user = "匿名";
+		  	    	} else {
+			  	    	user = j_data[i]["name"];
+		  	    	}
+		  	    	var ct = formtime(j_data[i]["created_at"]);
+			  	    value += "<p class='compart'><b>" + user + '</b>(' + ct + ')　No:' + j_data[i]["id"] +'<br/>' + j_data[i]["value"] + "</p>";
+			  	    document.getElementById("atm_comm").innerHTML = value;
+				}
+			}else{
+				document.getElementById("atm_comm").innerHTML = 'コメントはありません';
+			}
+
+		},
+		function(j_data){
+			alert("sorry, this system is busy. Please try again later.")
+		});
+		ajaxtesxtrequest(null, "get", '/use/' + id,
+		function(j_data){
+			document.getElementById("use_count").innerHTML = j_data;
+		},
+		function(j_data){
+			alert("sorry, this system is busy. Please try again later.")
+		});
+		ajaxtesxtrequest(null, "get", '/map/clipcnt/' + id,
+		function(j_data){
+			document.getElementById("clip_count").innerHTML = j_data;
+		},
+		function(j_data){
+			alert("sorry, this system is busy. Please try again later.")
+		});
+		ajaxtesxtrequest(null, "get", '/search/' + id,
+		function(j_data){
+			document.getElementById("search_count").innerHTML = j_data;
+		},
+		function(j_data){
+			alert("sorry, this system is busy. Please try again later.")
+		});
+	} else {
+		document.getElementById("map_detail").style.display = 'none';
+	}
+}
+function formtime (tt) {
+	var date = new Date(tt);
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var day = date.getDate();
+	var hh = date.getHours();
+	var mm = date.getMinutes();
+	var ss = date.getSeconds();
+	if ( month < 10 ) {
+	　　month = '0' + month;
+	}
+	if ( day < 10 ) {
+	　　day = '0' + day;
+	}
+	return year + '/' + month + '/' + day + " " + hh + ':' + mm + ':' + ss;
 }
 function route_set(lat, lgn) {
 	if($("#self_lat").val() == '' || $("#self_lgn").val() == ''){
@@ -586,25 +656,20 @@ function map_set(mapid) {
 function regist_map() {
 	if (document.getElementById("lat").value == ''
 		|| document.getElementById("lgn").value == '') {
-		alert("銀行選択ボタンから銀行を選択してください。");
-	}
-
-	if (document.getElementById("mapname").value == '') {
-		alert("マップ名を入れてください");
+		alert("配置ボタンから銀行を選択してください。");
+		return;
 	}
 
 	var data = $.toJSON({
 		lat : document.getElementById("lat").value,
 		lgn : document.getElementById("lgn").value,
 		kind : document.getElementById("kind").value,
-		memo : document.getElementById("memo").value,
-		mapname :document.getElementById("mapname").value 
+		memo : '',
+		mapname : '' 
 	});
 	ajaxrequest(data,"post","/map/create",
 	function(j_data){
 		dispLatLng();
-		document.getElementById("memo").value　= '';
-		document.getElementById("mapname").value　= '';
 		if (tmpmarker != null ) {
 			tmpmarker.setMap(null);
 		}
@@ -687,6 +752,21 @@ $.toast({
   position : 'bottom-right'
 })
 }
+function registuse() {
+$.toast({ 
+  heading: '登録しました',
+  width: '300px',
+  text:'このATMを使った！しました。',
+  showHideTransition : 'fade',
+  textColor : '#eee',
+  allowToastClose : true,
+  hideAfter : 3000,
+  stack : 1,
+  textAlign : 'left',
+  icon: 'success',
+  position : 'bottom-right'
+})
+}
 function changeform_i(){
 	document.getElementById("input_form").style.display = 'block';
 	document.getElementById("search_form").style.display = 'none';
@@ -727,5 +807,21 @@ function where(choice) {
 	} else if ( choice == 10){
 		alert("わ行から始まる銀行は登録できません。")
 	}
+}
+function use_add() {
+	var data = $.toJSON({
+		id : document.getElementById("mapid").value
+	});
+	ajaxrequest(data,"post","/use/create",
+	function(j_data){
+		dispLatLng();
+		if (tmpmarker != null ) {
+			tmpmarker.setMap(null);
+		}
+		registuse();
+	},
+	function(j_data){
+		alert("sorry, this system is busy. Please try again later.")
+	});
 }
 </script>
